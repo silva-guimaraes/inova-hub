@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace aspnet2.Models;
+namespace aspnet2.Models.Scaffold;
 
 public partial class MyDbContext : DbContext
 {
@@ -16,6 +16,8 @@ public partial class MyDbContext : DbContext
     }
 
     public virtual DbSet<Comment> Comments { get; set; }
+
+    public virtual DbSet<Favorite> Favorites { get; set; }
 
     public virtual DbSet<Idea> Ideas { get; set; }
 
@@ -58,35 +60,57 @@ public partial class MyDbContext : DbContext
                 .HasConstraintName("comment_user_id_fkey");
         });
 
+        modelBuilder.Entity<Favorite>(entity =>
+        {
+            entity.HasKey(e => new { e.IdUser, e.IdIdea }).HasName("favorite_pk");
+
+            entity.ToTable("favorite");
+
+            entity.Property(e => e.IdUser).HasColumnName("id_user");
+            entity.Property(e => e.IdIdea).HasColumnName("id_idea");
+            entity.Property(e => e.FavoriteDate)
+                .HasDefaultValueSql("CURRENT_DATE")
+                .HasComment("vai automaticamente gerar data atual quando linha for inserida")
+                .HasColumnName("favorite_date");
+
+            entity.HasOne(d => d.IdIdeaNavigation).WithMany(p => p.Favorites)
+                .HasForeignKey(d => d.IdIdea)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("idea_fk");
+
+            entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Favorites)
+                .HasForeignKey(d => d.IdUser)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("user_fk");
+        });
+
         modelBuilder.Entity<Idea>(entity =>
         {
-            entity.HasKey(e => new { e.Id, e.UserId }).HasName("idea_pkey");
+            entity.HasKey(e => e.Id).HasName("idea_pk");
 
             entity.ToTable("idea");
 
             entity.HasIndex(e => e.PostId, "header").IsUnique();
 
-            entity.HasIndex(e => e.Id, "idea_id_key").IsUnique();
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("id");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.Property(e => e.PostId).HasColumnName("post_id");
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.IdUser).HasColumnName("id_user");
+            entity.Property(e => e.PostId)
+                .HasComment("idea é uma subclasse de post")
+                .HasColumnName("post_id");
             entity.Property(e => e.Title)
                 .HasMaxLength(512)
                 .HasColumnName("title");
+
+            entity.HasOne(d => d.IdUserNavigation).WithMany(p => p.Ideas)
+                .HasForeignKey(d => d.IdUser)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("user_fk");
 
             entity.HasOne(d => d.Post).WithOne(p => p.Idea)
                 .HasPrincipalKey<Post>(p => p.Id)
                 .HasForeignKey<Idea>(d => d.PostId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("posts");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Ideas)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("creator");
         });
 
         modelBuilder.Entity<Image>(entity =>
@@ -125,7 +149,6 @@ public partial class MyDbContext : DbContext
                 .HasColumnName("text");
 
             entity.HasOne(d => d.IdeaNavigation).WithMany(p => p.Posts)
-                .HasPrincipalKey(p => p.Id)
                 .HasForeignKey(d => d.IdeaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("post_idea_id_fkey");
@@ -139,7 +162,10 @@ public partial class MyDbContext : DbContext
 
             entity.Property(e => e.UserId).HasColumnName("user_id");
             entity.Property(e => e.PostId).HasColumnName("post_id");
-            entity.Property(e => e.UpvoteDate).HasColumnName("upvote_date");
+            entity.Property(e => e.UpvoteDate)
+                .HasDefaultValueSql("CURRENT_DATE")
+                .HasComment("vai automaticamente gerar data atual quando linha for inserida")
+                .HasColumnName("upvote_date");
 
             entity.HasOne(d => d.Post).WithMany(p => p.Upvotes)
                 .HasPrincipalKey(p => p.Id)
@@ -172,6 +198,10 @@ public partial class MyDbContext : DbContext
                 .HasMaxLength(32)
                 .HasColumnName("password");
         });
+        modelBuilder.HasSequence("comment_id_seq").HasMax(2147483647L);
+        modelBuilder.HasSequence("idea_id_seq").HasMax(2147483647L);
+        modelBuilder.HasSequence("post_id_seq").HasMax(2147483647L);
+        modelBuilder.HasSequence("user_id_seq").HasMax(2147483647L);
 
         OnModelCreatingPartial(modelBuilder);
     }

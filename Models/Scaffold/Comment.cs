@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace aspnet2.Models;
+namespace aspnet2.Models.Scaffold;
 
 public partial class Comment
 {

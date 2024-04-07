@@ -1,15 +1,22 @@
 
 
-using System;
-using System.Linq;
+// using System;
+// using System.Linq;
+// using aspnet2.Models.Scaffold;
 
-using var db = new Models.MyDbContext();
+System.Console.WriteLine("foobar");
 
-// using var db = new BloggingContext();
-//
-// // Note: This sample requires the database to be created before running.
-// // Console.WriteLine($"Database path: {db.DbPath}.");
-//
+// using var db = new MyDbContext();
+
+// db.Add(new User {
+//         Name = "daniel",
+//         Email = "silva__guimaraes@hotmail.com",
+//         Password = "enka speed"
+//         });
+
+// db.SaveChanges();
+
+
 // // Create
 // Console.WriteLine("Inserting a new blog");
 // db.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
@@ -32,30 +39,30 @@ using var db = new Models.MyDbContext();
 // db.SaveChanges();
 
 
-// var builder = WebApplication.CreateBuilder(args);
-//
-// // Add services to the container.
-// builder.Services.AddControllersWithViews();
-//
-// var app = builder.Build();
-//
-// // Configure the HTTP request pipeline.
-// if (!app.Environment.IsDevelopment())
-// {
-//     app.UseExceptionHandler("/Home/Error");
-//     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-//     app.UseHsts();
-// }
-//
-// app.UseHttpsRedirection();
-// app.UseStaticFiles();
-//
-// app.UseRouting();
-//
-// app.UseAuthorization();
-//
-// app.MapControllerRoute(
-//     name: "default",
-//     pattern: "{controller=Home}/{action=Index}/{id?}");
-//
-// app.Run();
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();
