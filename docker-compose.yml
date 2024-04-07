@@ -11,18 +11,3 @@ services:
       POSTGRES_PASSWORD: 1234
       POSTGRES_USER: postgres
       POSTGRES_DB: my_db
-  dba:
-    image: dpage/pgadmin4
-    # user: root # gambiarra. não sei até onde isso vai
-    environment:
-      PGADMIN_DEFAULT_EMAIL: foobar@foobar.com
-      PGADMIN_DEFAULT_PASSWORD: 1234
-    ports:
-      - 80:80
-    volumes:
-      - ./pgadmin:/var/lib/pgadmin
-      # - /path/to/certificate.cert:/certs/server.cert
-      # - /path/to/certificate.key:/certs/server.key
-      - ./pgadmin/servers.json:/pgadmin4/servers.json
-    depends_on:
-      - db
