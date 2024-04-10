@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using aspnet2.Models;
-// using aspnet2.Models.Scaffold;
+// using System.Web.Helpers;
 
 namespace aspnet2.Controllers;
 
@@ -24,10 +24,14 @@ public class HomeController : Controller
         return View();
     }
 
-    [Route("Privacy")]
-    public String Privacy()
+    // [Route("json")]
+    // public String Json() {
+    //     return System.Web.
+    // }
+
+    public IActionResult Privacy()
     {
-        return "foobar";
+        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
