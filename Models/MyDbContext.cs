@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace aspnet2.Models.Scaffold;
+namespace aspnet2.Models;
 
 public partial class MyDbContext : DbContext
 {
@@ -90,13 +90,11 @@ public partial class MyDbContext : DbContext
 
             entity.ToTable("idea");
 
-            entity.HasIndex(e => e.PostId, "header").IsUnique();
-
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.IdUser).HasColumnName("id_user");
-            entity.Property(e => e.PostId)
-                .HasComment("idea é uma subclasse de post")
-                .HasColumnName("post_id");
+            entity.Property(e => e.Text)
+                .HasMaxLength(4000)
+                .HasColumnName("text");
             entity.Property(e => e.Title)
                 .HasMaxLength(512)
                 .HasColumnName("title");
@@ -105,12 +103,6 @@ public partial class MyDbContext : DbContext
                 .HasForeignKey(d => d.IdUser)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("user_fk");
-
-            entity.HasOne(d => d.Post).WithOne(p => p.Idea)
-                .HasPrincipalKey<Post>(p => p.Id)
-                .HasForeignKey<Idea>(d => d.PostId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("posts");
         });
 
         modelBuilder.Entity<Image>(entity =>
@@ -148,7 +140,7 @@ public partial class MyDbContext : DbContext
                 .HasMaxLength(4000)
                 .HasColumnName("text");
 
-            entity.HasOne(d => d.IdeaNavigation).WithMany(p => p.Posts)
+            entity.HasOne(d => d.Idea).WithMany(p => p.Posts)
                 .HasForeignKey(d => d.IdeaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("post_idea_id_fkey");
@@ -156,22 +148,20 @@ public partial class MyDbContext : DbContext
 
         modelBuilder.Entity<Upvote>(entity =>
         {
-            entity.HasKey(e => new { e.UserId, e.PostId }).HasName("upvote_pkey");
+            entity.HasKey(e => new { e.UserId, e.IdIdea }).HasName("upvote_pk");
 
             entity.ToTable("upvote");
 
             entity.Property(e => e.UserId).HasColumnName("user_id");
-            entity.Property(e => e.PostId).HasColumnName("post_id");
+            entity.Property(e => e.IdIdea).HasColumnName("id_idea");
             entity.Property(e => e.UpvoteDate)
                 .HasDefaultValueSql("CURRENT_DATE")
                 .HasComment("vai automaticamente gerar data atual quando linha for inserida")
                 .HasColumnName("upvote_date");
 
-            entity.HasOne(d => d.Post).WithMany(p => p.Upvotes)
-                .HasPrincipalKey(p => p.Id)
-                .HasForeignKey(d => d.PostId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("upvote_post_id_fkey");
+            entity.HasOne(d => d.IdIdeaNavigation).WithMany(p => p.Upvotes)
+                .HasForeignKey(d => d.IdIdea)
+                .HasConstraintName("idea_fk");
 
             entity.HasOne(d => d.User).WithMany(p => p.Upvotes)
                 .HasForeignKey(d => d.UserId)

@@ -1,26 +1,33 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using aspnet2.Models;
+// using aspnet2.Models.Scaffold;
 
 namespace aspnet2.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly MyDbContext db;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(MyDbContext _db)
     {
-        _logger = logger;
+        db = _db;
     }
 
-    public IActionResult Index()
-    {
+    [Route("")]
+    public IActionResult Index() {
+        return View(db.Ideas.ToList());
+    }
+
+    [Route("teste")]
+    public IActionResult Teste() {
         return View();
     }
 
-    public IActionResult Privacy()
+    [Route("Privacy")]
+    public String Privacy()
     {
-        return View();
+        return "foobar";
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

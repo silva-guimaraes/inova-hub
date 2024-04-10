@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace aspnet2.Models.Scaffold;
+namespace aspnet2.Models;
 
 public partial class Post
 {
@@ -15,11 +15,7 @@ public partial class Post
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
-    public virtual Idea? Idea { get; set; }
-
-    public virtual Idea IdeaNavigation { get; set; } = null!;
+    public virtual Idea Idea { get; set; } = null!;
 
     public virtual ICollection<Image> Images { get; set; } = new List<Image>();
-
-    public virtual ICollection<Upvote> Upvotes { get; set; } = new List<Upvote>();
 }

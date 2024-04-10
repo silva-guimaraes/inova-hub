@@ -1,48 +1,12 @@
 
 
-// using System;
-// using System.Linq;
-// using aspnet2.Models.Scaffold;
-
-System.Console.WriteLine("foobar");
-
-// using var db = new MyDbContext();
-
-// db.Add(new User {
-//         Name = "daniel",
-//         Email = "silva__guimaraes@hotmail.com",
-//         Password = "enka speed"
-//         });
-
-// db.SaveChanges();
-
-
-// // Create
-// Console.WriteLine("Inserting a new blog");
-// db.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
-//
-// // Read
-// Console.WriteLine("Querying for a blog");
-// var blog = db.Blogs
-//     .OrderBy(b => b.BlogId)
-//     .First();
-//
-// // Update
-// Console.WriteLine("Updating the blog and adding a post");
-// blog.Url = "https://devblogs.microsoft.com/dotnet";
-// blog.Posts.Add(
-//     new Post { Title = "Hello World", Content = "I wrote an app using EF Core!" });
-//
-// // Delete
-// Console.WriteLine("Delete the blog");
-//
-// db.SaveChanges();
-
+System.Console.WriteLine("inicio");
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<aspnet2.Models.MyDbContext>();
 
 var app = builder.Build();
 
@@ -61,8 +25,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
+
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
