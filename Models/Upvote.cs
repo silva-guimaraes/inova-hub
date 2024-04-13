@@ -9,9 +9,6 @@ public partial class Upvote
 
     public int IdIdea { get; set; }
 
-    /// <summary>
-    /// vai automaticamente gerar data atual quando linha for inserida
-    /// </summary>
     public DateOnly? UpvoteDate { get; set; }
 
     public virtual Idea IdIdeaNavigation { get; set; } = null!;

@@ -16,7 +16,18 @@ public class HomeController : Controller
 
     [Route("")]
     public IActionResult Index() {
-        return View(db.Ideas.ToList());
+        // seleciona cada ideia + upvotes correspondentes
+        // https://learn.microsoft.com/en-us/dotnet/csharp/linq/standard-query-operators/join-operations#group-join
+        var query = (from i in db.Ideas
+            join u in db.Upvotes on i.Id equals u.IdIdea into Upvotes
+            select new {
+                Idea = i,
+                Upvotes = Upvotes.ToList(),
+            });
+
+        ViewBag.Ideas = query.ToList();
+
+        return View();
     }
 
     [Route("teste")]
