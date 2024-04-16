@@ -40,7 +40,8 @@ public class HomeController : Controller
     //     return System.Web.
     // }
 
-    public IActionResult Privacy()
+    [Route("Contacts")]
+    public IActionResult Contacts()
     {
         return View();
     }
