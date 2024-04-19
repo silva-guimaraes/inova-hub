@@ -1,0 +1,94 @@
+
+@{
+    ViewData["Title"] = "Cadastro";
+}
+
+<h1 class="fs-1 mb-5">Cadastra-se</h1>
+<form class="w-75 m-auto">
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ex: meu_endereco@email.com"> 
+    <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Senha</label>
+        <input type="password" class="form-control" id="exampleInputPassword1">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Confirmar Senha</label>
+        <input type="password" class="form-control" id="exampleInputPassword1">
+    </div>
+    <div>
+        <p>Já possui conta?<a style="cursor: pointer; text-decoration: underline rgb(15, 79, 255);" class="text-primary" data-bs-toggle="modal" data-bs-target="#loginModal"> Entrar!</a></p>
+    </div>
+    <button type="submit" class="btn btn-primary w-100 mb-5">Entrar</button>
+</form>
+
+
+<!-- PopUp Login -->
+<div class="modal fade text-dark" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title fs-3" id="loginModalLabel">Entrar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form class="w-75 m-auto">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ex: meu_endereco@email.com"> 
+        <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Manter este dispositivo conectado.</label>
+            </div>
+            <div>
+                <a style="cursor: pointer;" id="forgotPasswordLink" class="text-primary">Esqueceu a senha?</a>
+                <p>Ainda não possui conta?<a asp-area="" asp-controller="Home" asp-action="Cadastro"> Cadastra-se!</a></p>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mb-4 mt-4">Entrar</button>
+        </form>
+    </div>
+    </div>
+</div>
+</div>
+
+<!-- PopUp Recuperar Senha -->
+<div class="modal fade text-dark" id="forgotPasswordModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <i id="backToLogin" data-bs-toggle="modal" data-bs-target="#forgotPassowordModal" type="button" class="fa-solid fa-arrow-left fs-3"></i>
+        <h1 class="modal-title fs-3 ms-4" id="exampleModalLabel">Entrar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form class="w-75 m-auto">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ex: meu_endereco@email.com"> 
+        <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Senha</label>
+                <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Manter este dispositivo conectado.</label>
+            </div>
+            <div>
+                <p>Ainda não possui conta?<a asp-area="" asp-controller="Home" asp-action="Cadastro"> Cadastra-se!</a></p>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mb-4 mt-4">Entrar</button>
+        </form>
+    </div>
+    </div>
+</div>
+</div>

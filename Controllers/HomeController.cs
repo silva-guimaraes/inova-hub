@@ -30,8 +30,8 @@ public class HomeController : Controller
         return View();
     }
 
-    [Route("Login")]
-    public IActionResult Login() {
+    [Route("Cadastro")]
+    public IActionResult Cadastro() {
         return View();
     }
 
