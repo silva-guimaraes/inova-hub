@@ -51,3 +51,15 @@ button.accept-policy {
     padding-left: 400px;
     padding-right: 20px;
 }
+
+/* Classes para mudar o linear gradient do Nav dependendo do Color Mode */
+
+.gradiente-dark{
+  background: linear-gradient(to right, #0047FF, #2C4E61 70%);
+}
+
+.gradiente-light{
+  background: linear-gradient(to right, #FAC700, #FF8A00 70%);
+}
+
+/* -------------------------------------------------------------------- */
