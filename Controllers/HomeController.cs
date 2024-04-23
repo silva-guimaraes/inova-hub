@@ -30,6 +30,16 @@ public class HomeController : Controller
         return View();
     }
 
+    [Route("Idea/{id?}")]
+    public IActionResult Idea(int? id) {
+        var query = db.Ideas.Where(x => x.Id == id).Single();
+
+        ViewBag.Idea = query;
+        ViewBag.Title = query.Title;
+       
+        return View();
+    }
+
     [Route("Cadastro")]
     public IActionResult Cadastro() {
         return View();
