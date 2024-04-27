@@ -4,7 +4,7 @@ using aspnet2.Models;
 // using System.Web.Helpers;
 
 namespace aspnet2.Controllers;
-
+[ApiExplorerSettings(IgnoreApi = true)]
 public class HomeController : Controller
 {
     private readonly MyDbContext db;
@@ -60,5 +60,14 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    // TODO: A LOGICA SE EXISTE É DE BOA O FODA É O RESTO KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+    [Route("VerificarLogin")]
+    public IActionResult VerificarLogin(string email, string senha) 
+    {
+        string foo = $"Email:{email} & Senha: {senha}";
+        return Content(foo);
+        // DEPOIS EU CONTINUO GENTE, EU AINDA NÃO DORMI
     }
 }
