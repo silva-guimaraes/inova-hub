@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using aspnet2.Models;
+using Microsoft.EntityFrameworkCore;
 // using System.Web.Helpers;
 
 namespace aspnet2.Controllers;
@@ -12,6 +13,7 @@ public class HomeController : Controller
     public HomeController(MyDbContext _db)
     {
         db = _db;
+
     }
 
     [Route("")]
@@ -62,12 +64,22 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    // TODO: A LOGICA SE EXISTE É DE BOA O FODA É O RESTO KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+    // TODO: melhorar isso daqui, tá feio e é usual só por enquanto
     [Route("VerificarLogin")]
-    public IActionResult VerificarLogin(string email, string senha) 
+    public async Task<IActionResult> VerificarLogin(string login, string pass)
     {
-        string foo = $"Email:{email} & Senha: {senha}";
-        return Content(foo);
-        // DEPOIS EU CONTINUO GENTE, EU AINDA NÃO DORMI
+        var isValid = false;
+        var dataFromContext = await db.Users.ToListAsync();
+        foreach (var data in dataFromContext)
+        {
+            
+            if ((data.Name == login && data.Password == pass) || (data.Email == login && data.Password == pass) ) 
+            {
+                isValid = true;
+                break;
+            }    
+        }
+        return Content($"{isValid}");
+
     }
 }
