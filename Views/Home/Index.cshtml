@@ -73,24 +73,24 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form class="w-75 m-auto">
+                    <form class="w-75 m-auto" action="/VerificarLogin" method="post">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ex: meu_endereco@email.com"> 
+                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ex: meu_endereco@email.com" name="login"> 
             <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Senha</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+                    <label for="exampleInputPassword1" class="form-label" >Senha</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" name="pass">
                 </div>
                 <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1">Manter este dispositivo conectado.</label>
                 </div>
-                <div>
+               @*  <div>
                     <a style="cursor: pointer;" id="forgotPasswordLink" class="text-primary">Esqueceu a senha?</a>
                     <p>Ainda não possui conta?<a asp-area="" asp-controller="Home" asp-action="Cadastro"> Cadastra-se!</a></p>
-                </div>
+                </div> *@
                 <button type="submit" class="btn btn-primary w-100 mb-4 mt-4">Entrar</button>
             </form>
         </div>

@@ -1,10 +1,11 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using aspnet2.Models;
+using Microsoft.EntityFrameworkCore;
 // using System.Web.Helpers;
 
 namespace aspnet2.Controllers;
-
+[ApiExplorerSettings(IgnoreApi = true)]
 public class HomeController : Controller
 {
     private readonly MyDbContext db;
@@ -12,6 +13,7 @@ public class HomeController : Controller
     public HomeController(MyDbContext _db)
     {
         db = _db;
+
     }
 
     [Route("")]
@@ -60,5 +62,24 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    // TODO: melhorar isso daqui, tá feio e é usual só por enquanto
+    [Route("VerificarLogin")]
+    public async Task<IActionResult> VerificarLogin(string login, string pass)
+    {
+        var isValid = false;
+        var dataFromContext = await db.Users.ToListAsync();
+        foreach (var data in dataFromContext)
+        {
+            
+            if ((data.Name == login && data.Password == pass) || (data.Email == login && data.Password == pass) ) 
+            {
+                isValid = true;
+                break;
+            }    
+        }
+        return Content($"{isValid}");
+
     }
 }
