@@ -12,9 +12,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
-<body class="bg-dark text-light">
+<body class="bg-light text-dark">
     <header>
-        <nav id="navLayout" class="gradiente-dark navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav id="navLayout" class="gradiente-light navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             
             <div class="container-fluid">
                 <a style="margin-left: 2rem" class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index"> <img src="../img/logo.png" alt="Logo" width="70rem"> </a>
@@ -32,7 +32,7 @@
                         </button>
                     </div>
                     <!-- ícone do Color Theme Mode -->
-                    <i id="colorModeIcon" class="fa fa-sun me-5 fs-5" style="cursor: pointer;"></i>
+                    <i id="colorModeIcon" class="fa fa-moon me-5 fs-5" style="cursor: pointer;"></i>
 
                     <!-- Ícone de Usuário -->
                     <a data-bs-toggle="modal" data-bs-target="#loginModal">
@@ -63,29 +63,20 @@
     <script>
         // Script para alterar o Color Mode da página
         document.getElementById('colorModeIcon').addEventListener('click', function() {
-        document.body.classList.toggle('bg-dark');
-        document.body.classList.toggle('bg-light');
+            document.body.classList.toggle('bg-dark');
+            document.body.classList.toggle('bg-light');
 
-        document.body.classList.toggle('text-light');
-        document.body.classList.toggle('text-dark');
+            document.body.classList.toggle('text-light');
+            document.body.classList.toggle('text-dark');
 
-        // Variável para pegar o componente nav para mudar o estilo
-        var navLayoutCss = document.getElementById('navLayout')
+            // Variável para pegar o componente nav para mudar o estilo
+            var navLayoutCss = document.getElementById('navLayout')
 
-        if (document.body.classList.contains('bg-dark')) {
-            this.classList.remove('fa-moon');
-            this.classList.add('fa-sun');
-            
-            navLayoutCss.classList.remove('gradiente-light');
-            navLayoutCss.classList.add('gradiente-dark');
-        }
-        else {
-            this.classList.remove('fa-sun');
-            this.classList.add('fa-moon');
-            
-            navLayoutCss.classList.remove('gradiente-dark');
-            navLayoutCss.classList.add('gradiente-light');
-        }
+            this.classList.toggle('fa-moon');
+            this.classList.toggle('fa-sun');
+
+            navLayoutCss.classList.toggle('gradiente-light');
+            navLayoutCss.classList.toggle('gradiente-dark');
         });
     </script>
     <script>
