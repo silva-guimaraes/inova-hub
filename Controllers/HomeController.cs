@@ -64,7 +64,7 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    // TODO: melhorar isso daqui, tá feio e é usual só por enquanto
+    // TODO: melhorar isso daqui, tï¿½ feio e ï¿½ usual sï¿½ por enquanto
     [Route("VerificarLogin")]
     public async Task<IActionResult> VerificarLogin(string login, string pass)
     {
@@ -72,7 +72,7 @@ public class HomeController : Controller
         var dataFromContext = await db.Users.ToListAsync();
         foreach (var data in dataFromContext)
         {
-            
+            // fazer isso daqui usando linq
             if ((data.Name == login && data.Password == pass) || (data.Email == login && data.Password == pass) ) 
             {
                 isValid = true;
