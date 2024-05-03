@@ -1,10 +1,18 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using aspnet2.Models;
-using Microsoft.EntityFrameworkCore;
+// using Microsoft.EntityFrameworkCore;
+using aspnet2.Services;
+using Microsoft.AspNetCore.Authorization;
 // using System.Web.Helpers;
 
 namespace aspnet2.Controllers;
+
+
+// public class Autheticated : Controller {
+// }
+
+
 [ApiExplorerSettings(IgnoreApi = true)]
 public class HomeController : Controller
 {
@@ -14,6 +22,12 @@ public class HomeController : Controller
     {
         db = _db;
 
+    }
+
+    [Authorize]
+    [Route("auto")]
+    public string Foo() {
+        return "Authorizado.";
     }
 
     [Route("")]
@@ -64,22 +78,23 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    // TODO: melhorar isso daqui, t� feio e � usual s� por enquanto
+    // https://balta.io/blog/aspnet-5-autenticacao-autorizacao-bearer-jwt
+    [HttpPost]
     [Route("VerificarLogin")]
-    public async Task<IActionResult> VerificarLogin(string login, string pass)
+    public ActionResult<dynamic> VerificarLogin(string login, string pass)
     {
-        var isValid = false;
-        var dataFromContext = await db.Users.ToListAsync();
-        foreach (var data in dataFromContext)
-        {
-            // fazer isso daqui usando linq
-            if ((data.Name == login && data.Password == pass) || (data.Email == login && data.Password == pass) ) 
-            {
-                isValid = true;
-                break;
-            }    
-        }
-        return Content($"{isValid}");
+        var user = db.Users.FirstOrDefault(x => x.Email == login && x.Password == pass);
 
+        if (user == null) 
+            return NotFound(new { message = "Usuário ou senha inválidos" });
+
+        // Gera o Token
+        var token = TokenService.GenerateToken(user);
+
+        // Passa token em header de resposta para o navegador
+        Response.Headers.Add("Authorization", "Bearer " + token);
+
+        // Retorna os dados
+        return new { token = token };
     }
 }

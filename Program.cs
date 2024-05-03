@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors();
 // builder.Services.AddControllers();
 
-var key = Encoding.ASCII.GetBytes("foobar");
+var key = Encoding.ASCII.GetBytes("foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar");
 builder.Services.AddAuthentication(x =>
         {
             x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

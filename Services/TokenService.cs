@@ -12,7 +12,7 @@ namespace aspnet2.Services
         public static string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("foobar");
+            var key = Encoding.ASCII.GetBytes("foobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobarfoobar");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
