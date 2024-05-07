@@ -1,17 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using aspnet2.Models;
-// using Microsoft.EntityFrameworkCore;
 using aspnet2.Services;
-using Microsoft.AspNetCore.Authorization;
-// using System.Web.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace aspnet2.Controllers;
-
-
-// public class Autheticated : Controller {
-// }
-
 
 [ApiExplorerSettings(IgnoreApi = true)]
 public class HomeController : Controller
@@ -24,16 +17,11 @@ public class HomeController : Controller
 
     }
 
-    [Authorize]
-    [Route("auto")]
-    public string Foo() {
-        return "Authorizado.";
-    }
-
     [Route("")]
     public IActionResult Index() {
-        // seleciona cada ideia + upvotes correspondentes
-        // https://learn.microsoft.com/en-us/dotnet/csharp/linq/standard-query-operators/join-operations#group-join
+        // // seleciona cada ideia + upvotes correspondentes
+        // // https://learn.microsoft.com/en-us/dotnet/csharp/linq/standard-query-operators/join-operations#group-join
+        // // fixme: metodo melhor logo abaixo
         var query = (from i in db.Ideas
             join u in db.Upvotes on i.Id equals u.IdIdea into Upvotes
             select new {
@@ -43,7 +31,24 @@ public class HomeController : Controller
 
         ViewBag.Ideas = query.ToList();
 
+        ViewBag.Ideas.Clear();
+
         return View();
+    }
+
+    [Route("Serve/{last?}")]
+    public async Task<IActionResult> Feed(int? last) {
+
+        if (last == null)
+            last = int.MinValue;
+
+        var query = await db.Ideas.Include(x => x.Upvotes)
+            .Where(x => x.Id > last)
+            .OrderBy(x => x.Id)
+            .Take(3).ToListAsync();
+
+
+        return Json(new {posts = query });
     }
 
     [Route("Idea/{id?}")]

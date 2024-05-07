@@ -7,7 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    );
+    
 builder.Services.AddDbContext<MyDbContext>(options => 
         options.UseNpgsql(builder.Configuration.GetConnectionString("TestDatabase")));
 builder.Services.AddMvc();
