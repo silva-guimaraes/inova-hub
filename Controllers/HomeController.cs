@@ -1,10 +1,11 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using aspnet2.Models;
+using aspnet2.Services;
 using Microsoft.EntityFrameworkCore;
-// using System.Web.Helpers;
 
 namespace aspnet2.Controllers;
+
 [ApiExplorerSettings(IgnoreApi = true)]
 public class HomeController : Controller
 {
@@ -18,8 +19,9 @@ public class HomeController : Controller
 
     [Route("")]
     public IActionResult Index() {
-        // seleciona cada ideia + upvotes correspondentes
-        // https://learn.microsoft.com/en-us/dotnet/csharp/linq/standard-query-operators/join-operations#group-join
+        // // seleciona cada ideia + upvotes correspondentes
+        // // https://learn.microsoft.com/en-us/dotnet/csharp/linq/standard-query-operators/join-operations#group-join
+        // // fixme: metodo melhor logo abaixo
         var query = (from i in db.Ideas
             join u in db.Upvotes on i.Id equals u.IdIdea into Upvotes
             select new {
@@ -29,7 +31,24 @@ public class HomeController : Controller
 
         ViewBag.Ideas = query.ToList();
 
+        ViewBag.Ideas.Clear();
+
         return View();
+    }
+
+    [Route("Serve/{last?}")]
+    public async Task<IActionResult> Feed(int? last) {
+
+        if (last == null)
+            last = int.MinValue;
+
+        var query = await db.Ideas.Include(x => x.Upvotes)
+            .Where(x => x.Id > last)
+            .OrderBy(x => x.Id)
+            .Take(3).ToListAsync();
+
+
+        return Json(new {posts = query });
     }
 
     [Route("Idea/{id?}")]
@@ -64,22 +83,23 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    // TODO: melhorar isso daqui, t� feio e � usual s� por enquanto
+    // https://balta.io/blog/aspnet-5-autenticacao-autorizacao-bearer-jwt
+    [HttpPost]
     [Route("VerificarLogin")]
-    public async Task<IActionResult> VerificarLogin(string login, string pass)
+    public ActionResult<dynamic> VerificarLogin(string login, string pass)
     {
-        var isValid = false;
-        var dataFromContext = await db.Users.ToListAsync();
-        foreach (var data in dataFromContext)
-        {
-            // fazer isso daqui usando linq
-            if ((data.Name == login && data.Password == pass) || (data.Email == login && data.Password == pass) ) 
-            {
-                isValid = true;
-                break;
-            }    
-        }
-        return Content($"{isValid}");
+        var user = db.Users.FirstOrDefault(x => x.Email == login && x.Password == pass);
 
+        if (user == null) 
+            return NotFound(new { message = "Usuário ou senha inválidos" });
+
+        // Gera o Token
+        var token = TokenService.GenerateToken(user);
+
+        // Passa token em header de resposta para o navegador
+        Response.Headers.Add("Authorization", "Bearer " + token);
+
+        // Retorna os dados
+        return new { token = token };
     }
 }

@@ -1,14 +1,19 @@
 
 
 using Microsoft.EntityFrameworkCore;
-
-// System.Console.WriteLine("inicio");
+using aspnet2.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<aspnet2.Models.MyDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("TestDatabase")));
+builder.Services.AddCors();
+
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    );
+    
+builder.Services.AddDbContext<MyDbContext>(options => 
+        options.UseNpgsql(builder.Configuration.GetConnectionString("TestDatabase")));
 builder.Services.AddMvc();
 builder.Services.AddSwaggerGen();
 var app = builder.Build();
@@ -22,6 +27,8 @@ if (!app.Environment.IsDevelopment())
 
 
 }
+
+// app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseSwagger();
 app.UseSwaggerUI();
