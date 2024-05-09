@@ -65,6 +65,12 @@ public class HomeController : Controller
     public IActionResult Cadastro() {
         return View();
     }
+    
+    
+    [Route("Perfil")]
+    public IActionResult Perfil() {
+        return View();
+    }
 
     // [Route("json")]
     // public String Json() {
@@ -93,7 +99,7 @@ public class HomeController : Controller
         if (user == null) 
             return NotFound(new { message = "Usuário ou senha inválidos" });
 
-        return RedirectToAction("Index");
+        return RedirectToAction("Perfil");
 
         // // Gera o Token
         // var token = TokenService.GenerateToken(user);
