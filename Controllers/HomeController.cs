@@ -48,7 +48,9 @@ public class HomeController : Controller
             .Take(3).ToListAsync();
 
 
-        return Json(new {posts = query });
+        // return Json(new {posts = query });
+        ViewBag.posts = query;
+        return View("FeedIdea");
     }
 
     [Route("Idea/{id?}")]
@@ -58,7 +60,7 @@ public class HomeController : Controller
         ViewBag.Idea = query;
         ViewBag.Title = query.Title;
        
-        return View();
+        return View("FeedIdea");
     }
 
     [Route("Cadastro")]
