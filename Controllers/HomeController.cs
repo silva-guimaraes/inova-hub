@@ -60,7 +60,7 @@ public class HomeController : Controller
         ViewBag.Idea = query;
         ViewBag.Title = query.Title;
        
-        return View("FeedIdea");
+        return View();
     }
 
     [Route("Cadastro")]
