@@ -36,9 +36,11 @@ public class HomeController : Controller
         return View();
     }
 
+    // retorna ideias que serão servidas no feed
     [Route("Serve/{last?}")]
     public async Task<IActionResult> Feed(int? last) {
 
+        // ultima ideia que o cliente tem. queremos procurar ideias que venham depois dessa obviamente
         if (last == null)
             last = int.MinValue;
 
@@ -48,7 +50,7 @@ public class HomeController : Controller
             .Take(3).ToListAsync();
 
 
-        // return Json(new {posts = query });
+        // passa as ideias pra view que retorna html puro pro cliente
         ViewBag.posts = query;
         return View("FeedIdea");
     }
@@ -63,15 +65,68 @@ public class HomeController : Controller
         return View();
     }
 
+    // usuário padrão para que nós possamos testar as funcionalidades que requerem um login.
+    // isso é temporário como o combinado.
+    public User? getDefaultUser() {
+        return db.Users.FirstOrDefault(x => x.Id == 3);
+    }
+
+    // não um downvote em si. isso apenas remove o upvote.
+    [Route("Downvote/{id?}")]
+    public void Downvote(int id) {
+
+        var query = db.Ideas.FirstOrDefault(x => x.Id == id);
+
+        var defaultUser = getDefaultUser();
+
+
+        if (query == null || defaultUser == null) {
+            Response.StatusCode = 404;
+            return;
+        }
+
+        var upvote = db.Upvotes.Where(x => x.IdIdea == id && x.UserId == defaultUser.Id).ExecuteDelete();
+
+        db.SaveChanges();
+    }
+
+    [Route("Upvote/{id?}")]
+    public void Upvote(int id) {
+
+        var query = db.Ideas.FirstOrDefault(x => x.Id == id);
+
+        var defaultUser = getDefaultUser();
+
+        if (query == null || defaultUser == null) {
+            Response.StatusCode = 404;
+            return;
+        }
+
+        try
+        {
+            db.Add(new Upvote {
+                    User = defaultUser,
+                    IdIdea = id,
+                    UserId = defaultUser.Id,
+                    // fixme: datetime, e não dateonly
+                    UpvoteDate = DateOnly.FromDateTime(DateTime.Now),
+                    IdIdeaNavigation = query,
+                    });
+
+            db.SaveChanges();
+        }
+        catch (DbUpdateException)
+        {
+            System.Console.WriteLine("duplicate");
+            Response.StatusCode = 401;
+            return;
+        }
+    }
+
     [Route("Cadastro")]
     public IActionResult Cadastro() {
         return View();
     }
-
-    // [Route("json")]
-    // public String Json() {
-    //     return System.Web.
-    // }
 
     [Route("Contacts")]
     public IActionResult Contacts()

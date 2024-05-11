@@ -31,7 +31,7 @@
                 <div id="feed">
                     
                 </div>
-                <button onclick="createIdeaPost()" type="button">click me!</button>
+                <button onclick="displayFeed()" type="button">click me!</button>
             </div>
             <div class="col-3 pt-5 text-center "> <!-- Coluna das comunidades a direita -->
                 <p>Comunidades</p>
@@ -110,13 +110,46 @@
         let feed = document.querySelector('#feed');
         let last = 0;
 
-        async function createIdeaPost() {
+        async function displayFeed() {
             let response = await fetch("http://@Host/Serve/" + last);
             feed.innerHTML += await response.text();
             last += 3;
         }
 
+        // cada botão de upvote tem um onclick chamando essa função
+        async function vote(id) {
+            // card da ideia guarda se ideia ja teve o upvote do usuario
+            // cada card tem um id: idea + id do post
+            let ideaCard = document.querySelector('#idea' + id);
+            // contador do card da ideia guarda o numero de upvotes.
+            // contador tem um id: counter + id do post
+            let counter = document.querySelector('#counter' + id);
+
+            if (ideaCard.classList.contains('upvoted')) {
+
+                ideaCard.classList.remove('upvoted');
+                let response = await fetch(`http://@Host/Downvote/${id}`);
+
+                if (!response.ok)
+                    return;
+
+                counter.textContent = Number(counter.textContent) - 1
+
+            } else {
+
+                ideaCard.classList.add('upvoted');
+                let response = await fetch(`http://@Host/Upvote/${id}`);
+
+                // servidor retorna 401 caso usuario ja tenha feito um upvote 
+                if (!response.ok)
+                    return;
+
+                counter.textContent = Number(counter.textContent) + 1
+
+            }
+
+        }
+
     </script>
-    
 </body>
 
