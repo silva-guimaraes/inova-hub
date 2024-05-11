@@ -20,4 +20,6 @@ public partial class Idea
     public virtual ICollection<Post> Posts { get; set; } = new List<Post>();
 
     public virtual ICollection<Upvote> Upvotes { get; set; } = new List<Upvote>();
+
+    public virtual ICollection<Image> Images { get; set; } = new List<Image>();
 }

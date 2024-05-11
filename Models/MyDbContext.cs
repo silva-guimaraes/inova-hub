@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace aspnet2.Models;
 
@@ -99,24 +97,34 @@ public partial class MyDbContext : DbContext
                 .HasForeignKey(d => d.IdUser)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("user_fk");
+
+            // entity.HasMany(e => e.Images)
+            //     .WithOne(e => e.Idea)
+            //     .HasForeignKey(e => e.IdeaId);
         });
 
         modelBuilder.Entity<Image>(entity =>
         {
-            entity.HasKey(e => new { e.Url, e.PostId }).HasName("image_pkey");
+            entity.HasKey(e => new { e.Url }).HasName("image_pkey");
 
             entity.ToTable("image");
 
             entity.Property(e => e.Url)
                 .HasMaxLength(256)
                 .HasColumnName("url");
-            entity.Property(e => e.PostId).HasColumnName("post_id");
+            entity.Property(e => e.IdeaId).HasColumnName("idea_id");
 
-            entity.HasOne(d => d.Post).WithMany(p => p.Images)
-                .HasPrincipalKey(p => p.Id)
-                .HasForeignKey(d => d.PostId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("image_post_id_fkey");
+            entity.HasOne(e => e.Idea)
+                .WithMany(e => e.Images)
+                .HasForeignKey(e => e.IdeaId)
+                .IsRequired();
+
+            // entity.HasOne(d => d.Post).WithMany(p => p.Images)
+            //     .HasPrincipalKey(p => p.Id)
+            //     .HasForeignKey(d => d.PostId)
+            //     .OnDelete(DeleteBehavior.ClientSetNull)
+            //     .HasConstraintName("image_post_id_fkey");
+
         });
 
         modelBuilder.Entity<Post>(entity =>

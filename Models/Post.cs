@@ -16,6 +16,4 @@ public partial class Post
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
     public virtual Idea Idea { get; set; } = null!;
-
-    public virtual ICollection<Image> Images { get; set; } = new List<Image>();
 }
