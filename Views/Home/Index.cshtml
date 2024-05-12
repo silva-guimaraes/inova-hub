@@ -6,6 +6,8 @@
 }
 
 <body>
+    <style>
+    </style>
     <div class="container-fluid">
         <div class="row">
             <div class="col-2 border-end m-0"> <!-- Coluna das categorias a esquerda -->
@@ -118,16 +120,16 @@
 
         // cada botão de upvote tem um onclick chamando essa função
         async function vote(id) {
-            // card da ideia guarda se ideia ja teve o upvote do usuario
-            // cada card tem um id: idea + id do post
-            let ideaCard = document.querySelector('#idea' + id);
+
+            let button = document.querySelector('#idea' + id);
+
             // contador do card da ideia guarda o numero de upvotes.
             // contador tem um id: counter + id do post
             let counter = document.querySelector('#counter' + id);
 
-            if (ideaCard.classList.contains('upvoted')) {
+            if (button.classList.contains('upvoted')) {
 
-                ideaCard.classList.remove('upvoted');
+                button.classList.remove('upvoted');
                 let response = await fetch(`http://@Host/Downvote/${id}`);
 
                 if (!response.ok)
@@ -137,7 +139,7 @@
 
             } else {
 
-                ideaCard.classList.add('upvoted');
+                button.classList.add('upvoted');
                 let response = await fetch(`http://@Host/Upvote/${id}`);
 
                 // servidor retorna 401 caso usuario ja tenha feito um upvote 
