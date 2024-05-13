@@ -14,25 +14,10 @@ public class HomeController : Controller
     public HomeController(MyDbContext _db)
     {
         db = _db;
-
     }
 
     [Route("")]
     public IActionResult Index() {
-        // // seleciona cada ideia + upvotes correspondentes
-        // // https://learn.microsoft.com/en-us/dotnet/csharp/linq/standard-query-operators/join-operations#group-join
-        // // fixme: metodo melhor logo abaixo
-        var query = (from i in db.Ideas
-            join u in db.Upvotes on i.Id equals u.IdIdea into Upvotes
-            select new {
-                Idea = i,
-                Upvotes = Upvotes.ToList(),
-            });
-
-        ViewBag.Ideas = query.ToList();
-
-        ViewBag.Ideas.Clear();
-
         return View();
     }
 
@@ -111,12 +96,12 @@ public class HomeController : Controller
         try
         {
             db.Add(new Upvote {
-                    User = defaultUser,
-                    IdIdea = id,
-                    UserId = defaultUser.Id,
-                    // fixme: datetime, e não dateonly
-                    UpvoteDate = DateOnly.FromDateTime(DateTime.Now),
-                    IdIdeaNavigation = query,
+                        User = defaultUser,
+                        IdIdea = id,
+                        UserId = defaultUser.Id,
+                        // fixme: datetime, e não dateonly
+                        UpvoteDate = DateOnly.FromDateTime(DateTime.Now),
+                        IdIdeaNavigation = query,
                     });
 
             db.SaveChanges();
