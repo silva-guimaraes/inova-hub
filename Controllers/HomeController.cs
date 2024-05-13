@@ -44,14 +44,20 @@ public class HomeController : Controller
         if (last == null)
             last = int.MinValue;
 
+        var defaultUser = getDefaultUser();
+
         var query = await db.Ideas.Include(x => x.Upvotes)
             .Where(x => x.Id > last)
             .OrderBy(x => x.Id)
             .Take(3).ToListAsync();
 
-
         // passa as ideias pra view que retorna html puro pro cliente
-        ViewBag.posts = query;
+        ViewBag.posts = query.Select((idea, index) => new { 
+                        Idea = idea,
+                        // true se usuário já tiver dado upvote nessa ideia
+                        UserUpvoted = idea.Upvotes.Any(x => x.UserId == defaultUser.Id)
+                    });
+
         return View("FeedIdea");
     }
 
