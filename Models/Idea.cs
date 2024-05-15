@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿
 namespace aspnet2.Models;
 
 public partial class Idea
@@ -22,4 +20,11 @@ public partial class Idea
     public virtual ICollection<Upvote> Upvotes { get; set; } = new List<Upvote>();
 
     public virtual ICollection<Image> Images { get; set; } = new List<Image>();
+}
+
+
+// necessário para criar cards pro feed
+public class IdeaViewModel {
+    public Idea Idea = null!;
+    public bool UserUpvoted;
 }

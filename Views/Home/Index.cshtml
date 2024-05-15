@@ -56,7 +56,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form class="w-75 m-auto" method="post" action="/VerificarLogin">
+            <!-- <form class="w-75 m-auto" method="post" action="/VerificarLogin"> -->
+            <!-- redirecionar para pagina do usuário a fim de demostração do nosso site. -->
+            <form class="w-75 m-auto" method="get" action="/User/3">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email</label>
                     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ex: meu_endereco@email.com" name="login"> 

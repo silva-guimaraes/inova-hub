@@ -36,14 +36,29 @@ public class HomeController : Controller
             .OrderBy(x => x.Id)
             .Take(3).ToListAsync();
 
-        // passa as ideias pra view que retorna html puro pro cliente
-        ViewBag.posts = query.Select((idea, index) => new { 
+        var model = query.Select((idea, index) => new IdeaViewModel { 
                         Idea = idea,
                         // true se usuário já tiver dado upvote nessa ideia
                         UserUpvoted = idea.Upvotes.Any(x => x.UserId == defaultUser.Id)
-                    });
+                    }).ToList();
 
-        return View("FeedIdea");
+        // passa as ideias pra view que retorna html puro pro cliente
+        return View("FeedIdea", model);
+    }
+
+    [Route("User/{id?}")]
+    public IActionResult Usuario(int? id) {
+
+        var query = db.Users
+            .Include(x => x.Ideas)
+            .FirstOrDefault(x => x.Id == id);
+        if (query == null) {
+            return NotFound();
+        }
+
+        var model = query;
+        // retornar view User
+        return View("User", model);
     }
 
     [Route("Idea/{id?}")]
@@ -112,6 +127,7 @@ public class HomeController : Controller
             Response.StatusCode = 401;
             return;
         }
+        Response.StatusCode = 204;
     }
 
     [Route("Cadastro")]
