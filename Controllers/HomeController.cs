@@ -22,31 +22,31 @@ public class HomeController : Controller
     }
 
     // retorna ideias que serão servidas no feed
-    [Route("Serve/{last?}")]
-    public async Task<IActionResult> Feed(int? last) {
+    [Route("Feed/{ultimo?}")]
+    public async Task<IActionResult> Feed(int? ultimo) {
 
         // ultima ideia que o cliente tem. queremos procurar ideias que venham depois dessa obviamente
-        if (last == null)
-            last = int.MinValue;
+        if (ultimo == null)
+            ultimo = int.MinValue;
 
-        var defaultUser = getDefaultUser();
+        var usuarioPadrao = getUsuarioPadrao();
 
         var query = await db.Ideas.Include(x => x.Upvotes)
-            .Where(x => x.Id > last)
+            .Where(x => x.Id > ultimo)
             .OrderBy(x => x.Id)
             .Take(3).ToListAsync();
 
         var model = query.Select((idea, index) => new IdeaViewModel { 
                         Idea = idea,
                         // true se usuário já tiver dado upvote nessa ideia
-                        UserUpvoted = idea.Upvotes.Any(x => x.UserId == defaultUser.Id)
+                        UserUpvoted = idea.Upvotes.Any(x => x.UserId == usuarioPadrao.Id)
                     }).ToList();
 
         // passa as ideias pra view que retorna html puro pro cliente
         return View("FeedIdea", model);
     }
 
-    [Route("User/{id?}")]
+    [Route("Usuario/{id?}")]
     public IActionResult Usuario(int? id) {
 
         var query = db.Users
@@ -58,10 +58,10 @@ public class HomeController : Controller
 
         var model = query;
         // retornar view User
-        return View("User", model);
+        return View(model);
     }
 
-    [Route("Idea/{id?}")]
+    [Route("Ideia/{id?}")]
     public IActionResult Idea(int? id) {
         var query = db.Ideas.Where(x => x.Id == id).Single();
 
@@ -73,7 +73,7 @@ public class HomeController : Controller
 
     // usuário padrão para que nós possamos testar as funcionalidades que requerem um login.
     // isso é temporário como o combinado.
-    public User? getDefaultUser() {
+    public User? getUsuarioPadrao() {
         return db.Users.FirstOrDefault(x => x.Id == 3);
     }
 
@@ -83,15 +83,15 @@ public class HomeController : Controller
 
         var query = db.Ideas.FirstOrDefault(x => x.Id == id);
 
-        var defaultUser = getDefaultUser();
+        var usuarioPadrao = getUsuarioPadrao();
 
 
-        if (query == null || defaultUser == null) {
+        if (query == null || usuarioPadrao == null) {
             Response.StatusCode = 404;
             return;
         }
 
-        var upvote = db.Upvotes.Where(x => x.IdIdea == id && x.UserId == defaultUser.Id).ExecuteDelete();
+        var upvote = db.Upvotes.Where(x => x.IdIdea == id && x.UserId == usuarioPadrao.Id).ExecuteDelete();
 
         db.SaveChanges();
     }
@@ -101,9 +101,9 @@ public class HomeController : Controller
 
         var query = db.Ideas.FirstOrDefault(x => x.Id == id);
 
-        var defaultUser = getDefaultUser();
+        var usuarioPadrao = getUsuarioPadrao();
 
-        if (query == null || defaultUser == null) {
+        if (query == null || usuarioPadrao == null) {
             Response.StatusCode = 404;
             return;
         }
@@ -111,9 +111,9 @@ public class HomeController : Controller
         try
         {
             db.Add(new Upvote {
-                        User = defaultUser,
+                        User = usuarioPadrao,
                         IdIdea = id,
-                        UserId = defaultUser.Id,
+                        UserId = usuarioPadrao.Id,
                         // fixme: datetime, e não dateonly
                         UpvoteDate = DateOnly.FromDateTime(DateTime.Now),
                         IdIdeaNavigation = query,

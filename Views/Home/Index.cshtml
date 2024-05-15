@@ -112,12 +112,12 @@
     <script>
 
         let feed = document.querySelector('#feed');
-        let last = 0;
+        let ultimo = 0;
 
         async function displayFeed() {
-            let response = await fetch("http://@Host/Serve/" + last);
-            feed.innerHTML += await response.text();
-            last += 3;
+            let resposta = await fetch("http://@Host/Feed/" + ultimo);
+            feed.innerHTML += await resposta.text();
+            ultimo += 3;
         }
 
         // cada botão de upvote tem um onclick chamando essa função
@@ -132,9 +132,9 @@
             if (button.classList.contains('upvoted')) {
 
                 button.classList.remove('upvoted');
-                let response = await fetch(`http://@Host/Downvote/${id}`);
+                let resposta = await fetch(`http://@Host/Downvote/${id}`);
 
-                if (!response.ok)
+                if (!resposta.ok)
                     return;
 
                 counter.textContent = Number(counter.textContent) - 1
@@ -142,10 +142,10 @@
             } else {
 
                 button.classList.add('upvoted');
-                let response = await fetch(`http://@Host/Upvote/${id}`);
+                let resposta = await fetch(`http://@Host/Upvote/${id}`);
 
                 // servidor retorna 401 caso usuario ja tenha feito um upvote 
-                if (!response.ok)
+                if (!resposta.ok)
                     return;
 
                 counter.textContent = Number(counter.textContent) + 1
