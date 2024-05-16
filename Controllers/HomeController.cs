@@ -134,6 +134,12 @@ public class HomeController : Controller
     public IActionResult Cadastro() {
         return View();
     }
+    
+    
+    [Route("Perfil")]
+    public IActionResult Perfil() {
+        return View();
+    }
 
     [Route("Contacts")]
     public IActionResult Contacts()
@@ -157,13 +163,15 @@ public class HomeController : Controller
         if (user == null) 
             return NotFound(new { message = "Usuário ou senha inválidos" });
 
-        // Gera o Token
-        var token = TokenService.GenerateToken(user);
+        return RedirectToAction("Perfil");
 
-        // Passa token em header de resposta para o navegador
-        Response.Headers.Add("Authorization", "Bearer " + token);
+        // // Gera o Token
+        // var token = TokenService.GenerateToken(user);
 
-        // Retorna os dados
-        return new { token = token };
+        // // Passa token em header de resposta para o navegador
+        // Response.Headers.Add("Authorization", "Bearer " + token);
+
+        // // Retorna os dados
+        // return new { token = token };
     }
 }
