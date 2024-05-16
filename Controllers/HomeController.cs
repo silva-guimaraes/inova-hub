@@ -57,8 +57,8 @@ public class HomeController : Controller
         }
 
         var model = query;
-        // retornar view User
-        return View(model);
+        // retornar view Perfil
+        return View("Perfil", model);
     }
 
     [Route("Ideia/{id?}")]
