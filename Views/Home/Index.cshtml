@@ -10,7 +10,8 @@
     </style>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-2 border-end m-0"> <!-- Coluna das categorias a esquerda -->
+            <!-- usar colunas é uma pessima ideia. favor ler sobre html <aside> -->
+            <div class="d-none d-lg-block col-2 border-end m-0"> <!-- Coluna das categorias a esquerda -->
                 <div class="container-fluid">   
                     <div class="w-100 my-4">
                         <div class="d-flex flex-row"><i class="fa-solid fa-house pe-2 mt-1"></i><p>Página Inicial</p></div>
@@ -28,14 +29,18 @@
                 </div>
 
             </div>
-
-            <div class="col-4 feed text-center w-50 m-auto"> <!-- Coluna do centro "feed" -->
+            <!-- Coluna do centro "feed" -->
+            <div class="feed text-center
+                col-100 col-lg-4 
+                w-0 w-lg-100
+                m-0 m-lg-auto"
+            >
                 <div id="feed">
                     
                 </div>
                 <button onclick="displayFeed()" type="button">click me!</button>
             </div>
-            <div class="col-3 pt-5 text-center "> <!-- Coluna das comunidades a direita -->
+            <div class="d-none d-lg-block col-3 pt-5 text-center "> <!-- Coluna das comunidades a direita -->
                 <p>Comunidades</p>
                 <div style="height: 400px; background-color: #BFC9CA;" class="p-3 rounded overflow-auto">
                     <p style="color: black">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius ea, nobis atque quaerat enim nostrum totam quae recusandae aperiam minima labore repudiandae animi sed aliquid voluptates repellendus, sequi cupiditate voluptatem.</p>
