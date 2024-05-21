@@ -153,18 +153,31 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
+    [HttpPost]
+    [Route("Cadastrar")]
+    public IActionResult Cadastrar(string nome, string email, string senha) 
+    {
+        var user = new User {
+            Name = nome,
+            Email = email,
+            Password =  senha
+        };
+        db.Users.Add(user);
+        db.SaveChanges();
+        return RedirectToAction("Index");
+    }
+
     // https://balta.io/blog/aspnet-5-autenticacao-autorizacao-bearer-jwt
     [HttpPost]
     [Route("VerificarLogin")]
-    public ActionResult<dynamic> VerificarLogin(string login, string pass)
+    public IActionResult VerificarLogin(string login, string pass)
     {
         var user = db.Users.FirstOrDefault(x => x.Email == login && x.Password == pass);
 
         if (user == null) 
             return NotFound(new { message = "Usuário ou senha inválidos" });
-
-        return RedirectToAction("Perfil");
-
+    
+        return Usuario(user.Id);
         // // Gera o Token
         // var token = TokenService.GenerateToken(user);
 

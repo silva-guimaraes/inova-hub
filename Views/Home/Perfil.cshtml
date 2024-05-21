@@ -31,12 +31,13 @@
                             +
                         </p>
                     </button>
-                    <div id="feed">
+                     <div id="feed">
+                        
                         @foreach (var Idea in Model.Ideas) {
                             @(await Html.PartialAsync("IdeaCard",
                                 new IdeaViewModel { Idea = Idea, UserUpvoted = false }));
                         }
-                    </div>
+                    </div> 
 
                 </div>
                 
