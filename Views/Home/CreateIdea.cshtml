@@ -1,0 +1,74 @@
+
+@{
+    ViewData["Title"] = "Nova ideia";
+}
+
+<div class="container justify-content-center">
+    <h1 class="fs-1 mb-3 mt-5 text-center">Nova ideia</h1>
+    <form class="w-50 m-auto border border-secondary-subtle p-3 rounded shadow-sm" method="post" action="Cadastrar">
+        <div class="mb-4">
+            <label for="exampleInputPassword1" class="form-label" name="nome">Título da Ideia:</label>
+            <input type="text" class="form-control" id="inputTitle" placeholder="Ex: Dê um título para sua ideia">
+        </div>
+        <div class="mb-4 w-75">
+            <label for="exampleInputEmail1" class="form-label" name="email">Imagens</label>
+            <input type="url" class="form-control" id="inputImages" aria-describedby="emailHelp" placeholder="Ex: Digite a URL da imagem da sua ideia"> 
+        <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
+        </div>
+        <div class="mb-4">
+            <label for="exampleInputPassword1" class="form-label" name="senha">Descrição</label>
+            <input type="text" class="form-control" id="inputDesc" placeholder="Ex: Digite uma descrição detalhada da sua ideia">
+        </div>
+        <div class="mb-4 w-75">
+            <label for="exampleInputPassword1" class="form-label">Colaboradores</label>
+            <input type="tex" class="form-control" id="inputColab" placeholder="Adicione colaboradores da ideia">
+        </div>
+        <label for="exampleInputPassword1" class="form-label">Selecione a categoria da sua ideia </label>
+        <div class="mb-4 w-50">
+            <input type="radio" id="TI" name="categoria" value="TI" id="inputCategory">
+            <label for="TI">TI</label><br>
+            <input type="radio" id="Marketing" name="categoria" value="Marketing" id="inputCategory"> 
+            <label for="Marketing">Marketing</label><br>
+            <input type="radio" id="Biologicas" name="categoria" value="Biologicas" id="inputCategory">
+            <label for="Biologicas">JavaScript</label>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" id="submitBtn" class="btn btn-primary w-25 m-auto mb-5 mt-5 disabled">Postar</button>
+        </div>
+    </form>
+
+    
+
+    
+</div>
+
+
+<script>
+        // Captura os elementos de senha e botão de envio
+        var tituloField= document.getElementById("inputTitle");
+        var descricaoField = document.getElementById("inputDesc");
+        var colabField = document.getElementById("inputColab");
+        var submitButton = document.getElementById("submitBtn");
+
+        // Adiciona um ouvinte de evento de entrada para ambos os campos de senha
+        tituloField.addEventListener("input", validatePassword);
+        descricaoField.addEventListener("input", validatePassword);
+        colabField.addEventListener("input", validatePassword);
+
+        // Função para validar as senhas
+        function validatePassword() {
+            var titulo = tituloField.value;
+            var descricao = descricaoField.value;
+            var colab = colabField.value;
+
+            
+
+            // Ativa o botão de envio se as senhas coincidirem e não forem vazias
+            if (titulo !== "" && descricao !== "" && colab !== "") {
+                submitButton.classList.remove("disabled");
+            } else {
+                submitButton.classList.add("disabled");
+            }
+        }
+</script>

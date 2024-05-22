@@ -134,6 +134,11 @@ public class HomeController : Controller
     public IActionResult Cadastro() {
         return View();
     }
+
+    [Route("CreateIdea")]
+    public IActionResult CreateIdea() {
+        return View();
+    }
     
     
     [Route("Perfil")]
