@@ -26,11 +26,13 @@
             <div class="col-4 feed text-center w-50 mx-auto"> <!-- Coluna do centro "feed" -->
                 <div id="feed">
                     <h1>Minhas Ideias</h1>
-                    <button class="btnStyle">
-                        <p style="color: white; font-size: 30px; font-weight: bold; margin: auto">
-                            +
-                        </p>
-                    </button>
+                    <a href="/NovaIdeia/">
+                        <button class="btnStyle">
+                            <p style="color: white; font-size: 30px; font-weight: bold; margin: auto">
+                                +
+                            </p>
+                        </button>
+                    </a>
                     <div id="feed">
                         @foreach (var Idea in Model.Ideas) {
                             @(await Html.PartialAsync("IdeaCard",

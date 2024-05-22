@@ -61,6 +61,12 @@ public class HomeController : Controller
         return View("Perfil", model);
     }
 
+    // [Route("NovaIdeia/")]
+    // public IActionResult NovaIdeia() {
+    //     return View();
+    // }
+
+
     [Route("Ideia/{id?}")]
     public IActionResult Idea(int? id) {
         var query = db.Ideas.Where(x => x.Id == id).Single();

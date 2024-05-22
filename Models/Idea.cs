@@ -19,7 +19,7 @@ public partial class Idea
 
     public virtual ICollection<Upvote> Upvotes { get; set; } = new List<Upvote>();
 
-    public virtual ICollection<Image> Images { get; set; } = new List<Image>();
+    public virtual List<Image> Images { get; set; } = new List<Image>();
 }
 
 
