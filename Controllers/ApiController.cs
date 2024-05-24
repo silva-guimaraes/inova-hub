@@ -8,38 +8,28 @@ namespace aspnet2.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-
     public class DataApiController : ControllerBase
     {
         private readonly MyDbContext _db;
-        public DataApiController(MyDbContext db) { _db = db; }
+        public ApiController(MyDbContext db) { _db = db; }
 
-        // Getters
-
+#region Gets
         [HttpGet("GetComments")]
         public async Task<IActionResult> GetComments() { return Ok(await _db.Comments.ToListAsync()); }
-
         [HttpGet("GetFavorites")]
         public async Task<IActionResult> GetFavorites() { return Ok(await _db.Favorites.ToListAsync()); }
-
         [HttpGet("GetIdeias")]
         public async Task<IActionResult> GetIdeias() { return Ok(await _db.Ideas.ToListAsync()); }
-
         [HttpGet("GetImages")]
         public async Task<IActionResult> GetImages() { return Ok(await _db.Images.ToListAsync()); }
-
-
         [HttpGet("GetPosts")]
         public async Task<IActionResult> GetPosts() { return Ok(await _db.Posts.ToListAsync()); }
-
         [HttpGet("GetUpvote")]
         public async Task<IActionResult> GetUpvote() { return Ok(await _db.Upvotes.ToListAsync()); }
-
         [HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsers() { return Ok(await _db.Users.ToListAsync()); }
-
-        // Posts
-
+#endregion
+#region Posts        
         [HttpPost("PostComments")]
         public async Task<IActionResult> PostComments(Comment coment) 
         {
@@ -47,7 +37,6 @@ namespace aspnet2.Controllers
             await _db.SaveChangesAsync();
             return Ok(coment);
         }
-
         [HttpPost("PostFavorites")]
         public async Task<IActionResult> PostFavorites(Favorite favorite)
         {
@@ -55,7 +44,6 @@ namespace aspnet2.Controllers
             await _db.SaveChangesAsync();
             return Ok(favorite);
         }
-
         [HttpPost("PostIdeias")]
         public async Task<IActionResult> PostIdeias(Idea idea)
         {
@@ -63,7 +51,6 @@ namespace aspnet2.Controllers
             await _db.SaveChangesAsync();
             return Ok(idea);
         }
-
         [HttpPost("PostImages")]
         public async Task<IActionResult> PostImages(Image image)
         {
@@ -71,7 +58,6 @@ namespace aspnet2.Controllers
             await _db.SaveChangesAsync();
             return Ok(image);
         }
-
         [HttpPost("PostPosts")]
         public async Task<IActionResult> PostPosts(Post post)
         {
@@ -79,7 +65,6 @@ namespace aspnet2.Controllers
             await _db.SaveChangesAsync();
             return Ok(post);
         }
-
         [HttpPost("PostUpvote")]
         public async Task<IActionResult> PostUpvote(Upvote upvote)
         {
@@ -87,7 +72,6 @@ namespace aspnet2.Controllers
             await _db.SaveChangesAsync();
             return Ok(upvote);
         }
-
         [HttpPost("PostUsers")]
         public async Task<IActionResult> PostUsers(User user)
         {
@@ -95,5 +79,6 @@ namespace aspnet2.Controllers
             await _db.SaveChangesAsync();
             return Ok(user);
         }
+#endregion
     }
 }
