@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using aspnet2.Models;
-using aspnet2.Services;
 using Microsoft.EntityFrameworkCore;
 namespace aspnet2.Controllers;
 

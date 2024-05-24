@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace aspnet2.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
-    public class DataApiController : ControllerBase
+    [Route("[controller]")]
+    public class SwaggerController : ControllerBase
     {
         private readonly MyDbContext _db;
-        public ApiController(MyDbContext db) { _db = db; }
+        public SwaggerController(MyDbContext db) { _db = db; }
 
-#region Gets
+
         [HttpGet("GetComments")]
         public async Task<IActionResult> GetComments() { return Ok(await _db.Comments.ToListAsync()); }
         [HttpGet("GetFavorites")]
@@ -28,8 +28,7 @@ namespace aspnet2.Controllers
         public async Task<IActionResult> GetUpvote() { return Ok(await _db.Upvotes.ToListAsync()); }
         [HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsers() { return Ok(await _db.Users.ToListAsync()); }
-#endregion
-#region Posts        
+   
         [HttpPost("PostComments")]
         public async Task<IActionResult> PostComments(Comment coment) 
         {
@@ -79,6 +78,6 @@ namespace aspnet2.Controllers
             await _db.SaveChangesAsync();
             return Ok(user);
         }
-#endregion
+
     }
 }
