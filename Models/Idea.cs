@@ -27,4 +27,5 @@ public partial class Idea
 public class IdeaViewModel {
     public Idea Idea = null!;
     public bool UserUpvoted;
+    public bool deleteIdea;
 }
