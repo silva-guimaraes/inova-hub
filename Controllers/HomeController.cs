@@ -124,7 +124,7 @@ public class HomeController : Controller
             Name = nome,
             Email = email,
             Password =  senha
-        };
+		};
         db.Users.Add(user);
         db.SaveChanges();
         return RedirectToAction("Index");
@@ -137,5 +137,20 @@ public class HomeController : Controller
         var user = db.Users.FirstOrDefault(x => x.Email == login && x.Password == pass);
         if (user == null) { return NotFound(new { message = "Usuário ou senha inválidos" }); }
         return Usuario(user.Id);
+    }
+
+    [HttpPost]
+    [Route("CadastrarIdea")]
+    public IActionResult CadastrarIdea(string titulo, string texto) 
+    {
+      var idea = new Idea{
+      	Title = titulo,
+	Text = texto
+      };
+
+      db.Ideas.Add(idea);
+      db.SaveChanges();
+      return RedirectToAction("Index");
+   
     }
 }
