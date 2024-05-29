@@ -10,8 +10,9 @@ public partial class Favorite
     public int IdIdea { get; set; }
 
     /// <summary>
-    /// vai automaticamente gerar data atual quando linha for inserida
+    /// Vai automaticamente gerar data atual quando linha for inserida
     /// </summary>
+    
     public DateOnly FavoriteDate { get; set; }
 
     public virtual Idea IdIdeaNavigation { get; set; } = null!;
