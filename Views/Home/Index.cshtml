@@ -32,8 +32,8 @@
             <!-- Coluna do centro "feed" -->
             <div class="feed text-center
                 col-100 col-lg-4 
-                w-0 w-lg-100
-                m-0 m-lg-auto"
+                w-0 w-sm-100
+                m-0 m-sm-auto"
             >
                 <div id="feed">
                     
@@ -62,7 +62,6 @@
             ultimo += 3;
         }
 
-        displayFeed();
 
         // cada botão de upvote tem um onclick chamando essa função
         async function vote(id) {
@@ -97,6 +96,11 @@
             }
 
         }
+
+        (async () => {
+            await displayFeed();
+            await displayFeed();
+        })();
 
     </script>
 </body>
