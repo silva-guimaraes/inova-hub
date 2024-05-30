@@ -20,6 +20,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-between">
+            <!-- Botão de upvote -->
             <button 
                 id="idea@(Model.Idea.Id)" 
                 class="d-flex flex-row m-1 rounded-2 btn btn-outline-warning ts-black 
@@ -37,6 +38,7 @@
                 <p class="m-1" style="user-select: none; color: black;" id="counter@(Model.Idea.Id)">@Model.Idea.Upvotes.Count</p>
             </button>
             
+            <!-- Botão de exclusão -->
             @if (Model.deleteIdea == true) { 
                 <button 
                     id="idea@(Model.Idea.Id)" 
@@ -45,7 +47,7 @@
                     onclick="vote(@Model.Idea.Id)"
                 >
 
-                    <a data-bs-toggle="modal" data-bs-target="#dataModal" class="align-content-center text-reset"><i class="fa-solid fa-trash fa-lg " style="cursor: pointer;" ></i> </a>
+                    <a data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="align-content-center text-reset pt-1"><i class="fa-solid fa-trash fa-lg " style="cursor: pointer;" ></i> </a>
                 </button>
             }
         </div>
