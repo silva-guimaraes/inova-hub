@@ -49,8 +49,8 @@
                 </div>
                 <div class="meusDados mb-5">
                     <div class="d-flex flex-row justify-content-center ms-3"><h3>Meus dados</h1> <a data-bs-toggle="modal" data-bs-target="#dataModal" class="mb-2 ms-2 align-content-center"><i class="fa-solid fa-pencil fa-lg " style="cursor: pointer;" ></i> </a></div>
-                    <h5>Nome</h3>
-                    <p>E-mail</p>
+                    <h5>@ViewBag.Nome</h3>
+                    <p>@ViewBag.Email</p>
                 </div>
                 <p>Comunidades</p>
                 <div style="height: 400px; background-color: #BFC9CA;" class="p-3 rounded overflow-auto">
@@ -114,20 +114,20 @@
         <div class="modal-body">
             <!-- <form class="w-75 m-auto" method="post" action="/VerificarLogin"> -->
             <!-- redirecionar para pagina do usuário a fim de demostração do nosso site. -->
-            <form class="w-75 m-auto" method="post" action="VerificarLogin">
+            <form class="w-75 m-auto" method="post" action="EditarUsuario">
                 <div class="mb-3">
-                    <label for="exampleInputNome" class="form-label">Nome</label>
-                    <input type="email" class="form-control" id="exampleInputNome" aria-describedby="emailHelp" name="login"> 
+                    <label class="form-label">Nome</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" name="nome"> 
             <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Ex: meu_endereco@email.com" name="login"> 
+                    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Ex: meu_endereco@email.com" name="email"> 
             <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Senha</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" name="pass">
+                    <input type="password" class="form-control" name="senha">
                 </div>
                 <button type="submit" class="btn btn-primary w-100 mb-4 mt-4">Salvar</button>
             </form>
