@@ -159,8 +159,8 @@ public class HomeController : Controller
          usuario.Email = email;
          usuario.Password = senha; 
          db.SaveChanges();
-         return NotFound("OK");
-      } else { return NotFound(":("); }     
+         return Usuario((int)TempData["usuarioemsessao"]);
+      } else { return NotFound(":( Erro, contate ao ademiro!"); }     
       
    
    }
