@@ -7,6 +7,8 @@ namespace aspnet2.Controllers;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class HomeController : Controller
 {
+    
+    private int usuarioLogado {get; set;}
     private readonly MyDbContext db;
     public HomeController(MyDbContext _db)
     {
@@ -49,6 +51,12 @@ public class HomeController : Controller
             .FirstOrDefault(x => x.Id == id);
         if (query == null) { return NotFound(); }
         var model = query;
+        var user = db.Users.Find(id);
+        ViewBag.Nome = user.Name;
+        ViewBag.Email = user.Email;
+        usuarioLogado = user.Id;
+        TempData["usuarioemsessao"] = usuarioLogado;
+        Console.WriteLine(usuarioLogado);
         return View("Perfil", model);
     }
 
@@ -135,7 +143,25 @@ public class HomeController : Controller
     public IActionResult VerificarLogin(string login, string pass)
     {
         var user = db.Users.FirstOrDefault(x => x.Email == login && x.Password == pass);
-        if (user == null) { return NotFound(new { message = "Usuário ou senha inválidos" }); }
+        if (user == null) { return NotFound("Usuario Não Encontrado!"); }	
         return Usuario(user.Id);
     }
+
+    [HttpPost]
+    [Route("EditarUsuario")]
+    public IActionResult EditarUsuario(string nome, string email, string senha)
+    {
+      Console.WriteLine(usuarioLogado);
+      var usuario = db.Users.Find(TempData["usuarioemsessao"]);  
+      if (usuario != null) 
+      {
+         usuario.Name = nome;
+         usuario.Email = email;
+         usuario.Password = senha; 
+         db.SaveChanges();
+         return Usuario((int)TempData["usuarioemsessao"]);
+      } else { return NotFound(":( Erro, contate ao ademiro!"); }     
+      
+   
+   }
 }
