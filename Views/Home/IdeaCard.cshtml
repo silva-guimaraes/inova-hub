@@ -11,7 +11,7 @@
         </div>
         <div class="card mx-auto text-center">
             @if (Model.Idea.Images.Count > 0) {
-                <img src="/images/@(Model.Idea.Images[0])" alt="">
+                <img src="/images/@(Model.Idea.Images[0].Url)" alt="">
             } else {
                 <img src="/images/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg" alt="">
             }

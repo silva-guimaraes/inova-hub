@@ -69,7 +69,9 @@ public partial class MyDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("idea_pk");
             entity.ToTable("idea");
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("id");
             entity.Property(e => e.IdUser).HasColumnName("id_user");
             entity.Property(e => e.Text)
                 .HasMaxLength(4000)
