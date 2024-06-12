@@ -44,7 +44,7 @@
                     id="idea@(Model.Idea.Id)" 
                     class="d-flex flex-row m-1 rounded-2 btn btn-outline-danger ts-black" 
                     data-bs-toggle="button"
-                    onclick="vote(@Model.Idea.Id)"
+                    onclick="ChamarModal(@Model.Idea.Id)"
                 >
 
                     <a data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" class="align-content-center text-reset pt-1"><i class="fa-solid fa-trash fa-lg " style="cursor: pointer;" ></i> </a>
@@ -60,10 +60,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="w-75 m-auto" method="post" action="VerificarLogin">
                     <p>Tem certeza que deseja excluir essa brilhante ideia?</p>
-                    <button type="submit" class="btn btn-danger w-100 mb-4 mt-4">Excluir</button>
-                </form>
+                    <button type="button" onclick="Excluir();" class="btn btn-danger w-100 mb-4 mt-4">Excluir</button>
             </div>
             </div>
         </div>
@@ -71,3 +69,19 @@
 
         </div>
     </div>
+
+    <script>
+    let _id;
+    function ChamarModal(id)
+    {
+        _id = id;
+    }
+
+    function Excluir()
+    {
+        fetch("http://localhost:5030/Delete?id=" + _id);
+        alert("Apagamos a Ideia!");
+    }
+
+
+    </script>>
