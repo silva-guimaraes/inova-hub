@@ -24,13 +24,17 @@ public class HomeController : Controller
         if (ultimo == null) { ultimo = int.MinValue; }
         var usuarioPadrao = getUsuarioPadrao();
         var query = await db.Ideas.Include(x => x.Upvotes)
+            .Include(x => x.Images)
             .Where(x => x.Id > ultimo)
             .OrderBy(x => x.Id)
             .Take(3).ToListAsync();
-        var model = query.Select((idea, index) => new IdeaViewModel {
+
+        var model = query.Select(
+                (idea, index) => new IdeaViewModel { 
                         Idea = idea,
                         UserUpvoted = idea.Upvotes.Any(x => x.UserId == usuarioPadrao!.Id)
-                    }).ToList();
+                    })
+            .ToList();
         return View("FeedIdea", model);
     }
 
@@ -105,12 +109,56 @@ public class HomeController : Controller
         Response.StatusCode = 204;
     }
 
+    // oque diabos é isso? já existe uma rota cadastrar...
     [Route("Cadastro")]
     public IActionResult Cadastro() { return View(); }
 
+    // fixme: aportuguesar
     [Route("CreateIdea")]
     public IActionResult CreateIdea() { return View(); }
 
+    [HttpPost]
+    [Route("CreateIdea")]
+    public async Task<Object> CriarIdeia(string nome, string desc, string categoria, List<IFormFile> imagens) 
+    {
+
+        var usuarioPadrao = getUsuarioPadrao();
+
+
+        System.Console.WriteLine("nova ideia!");
+        System.Console.WriteLine(nome);
+        System.Console.WriteLine(desc);
+        System.Console.WriteLine(categoria);
+
+        var newIdea = new Idea {Text = desc, Title = nome, IdUser = usuarioPadrao.Id };
+        // db.Ideas.Add(newIdea);
+
+        long size = imagens.Sum(f => f.Length);
+
+        foreach (var formFile in imagens)
+        {
+            if (formFile.Length > 0)
+            {
+                String[] path = {Environment.CurrentDirectory,"wwwroot", "images", formFile.FileName};
+
+                
+                var filePath = Path.Combine(path);
+                System.Console.WriteLine(filePath);
+                using (var stream = System.IO.File.Create(filePath))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+
+                db.Images.Add(new Image { Url = formFile.FileName, Idea = newIdea });
+
+            }
+        }
+
+        db.SaveChanges();
+
+        return Ok(new { count = imagens.Count, size });
+    }
+    
 
     [Route("Perfil")]
     public IActionResult Perfil() { return View(); }
@@ -123,6 +171,7 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
 
     [HttpPost]
     [Route("Cadastrar")]
