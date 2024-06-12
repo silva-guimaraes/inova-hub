@@ -7,7 +7,7 @@ namespace aspnet2.Controllers;
 [ApiExplorerSettings(IgnoreApi = true)]
 public class HomeController : Controller
 {
-    
+
     private int usuarioLogado {get; set;}
     private readonly MyDbContext db;
     public HomeController(MyDbContext _db)
@@ -39,7 +39,7 @@ public class HomeController : Controller
     }
 
     [Route("Ideia/{id?}")]
-    public IActionResult Idea(int? id) 
+    public IActionResult Idea(int? id)
     {
         var query = db.Ideas.Where(x => x.Id == id).Single();
         ViewBag.Idea = query;
@@ -48,7 +48,7 @@ public class HomeController : Controller
     }
 
     [Route("Usuario/{id?}")]
-    public IActionResult Usuario(int? id) 
+    public IActionResult Usuario(int? id)
     {
         var query = db.Users
             .Include(x => x.Ideas)
@@ -68,7 +68,7 @@ public class HomeController : Controller
     public User? getUsuarioPadrao() { return db.Users.FirstOrDefault(x => x.Id == 3); }
 
     [Route("Downvote/{id?}")]
-    public void Downvote(int id) 
+    public void Downvote(int id)
     {
         var query = db.Ideas.FirstOrDefault(x => x.Id == id);
         var usuarioPadrao = getUsuarioPadrao();
@@ -81,7 +81,7 @@ public class HomeController : Controller
     }
 
     [Route("Upvote/{id?}")]
-    public void Upvote(int id) 
+    public void Upvote(int id)
     {
         var query = db.Ideas.FirstOrDefault(x => x.Id == id);
         var usuarioPadrao = getUsuarioPadrao();
@@ -159,7 +159,7 @@ public class HomeController : Controller
         return Ok(new { count = imagens.Count, size });
     }
     
-    
+
     [Route("Perfil")]
     public IActionResult Perfil() { return View(); }
 
@@ -175,7 +175,7 @@ public class HomeController : Controller
 
     [HttpPost]
     [Route("Cadastrar")]
-    public IActionResult Cadastrar(string nome, string email, string senha) 
+    public IActionResult Cadastrar(string nome, string email, string senha)
     {
         var user = new User {
             Name = nome,
@@ -192,7 +192,7 @@ public class HomeController : Controller
     public IActionResult VerificarLogin(string login, string pass)
     {
         var user = db.Users.FirstOrDefault(x => x.Email == login && x.Password == pass);
-        if (user == null) { return NotFound("Usuario Não Encontrado!"); }	
+        if (user == null) { return NotFound("Usuario Não Encontrado!"); }
         return Usuario(user.Id);
     }
 
@@ -201,16 +201,30 @@ public class HomeController : Controller
     public IActionResult EditarUsuario(string nome, string email, string senha)
     {
       Console.WriteLine(usuarioLogado);
-      var usuario = db.Users.Find(TempData["usuarioemsessao"]);  
-      if (usuario != null) 
+      var usuario = db.Users.Find(TempData["usuarioemsessao"]);
+      if (usuario != null)
       {
          usuario.Name = nome;
          usuario.Email = email;
-         usuario.Password = senha; 
+         usuario.Password = senha;
          db.SaveChanges();
          return Usuario((int)TempData["usuarioemsessao"]);
-      } else { return NotFound(":( Erro, contate ao ademiro!"); }     
-      
-   
+      } else { return NotFound(":( Erro, contate ao ademiro!"); }
+
+
+
    }
+
+    [HttpDelete]
+    [Route("Delete/{id?}")]
+    public IActionResult Delete(int id)
+    {
+        var ideia = db.Ideas.Find(id);
+        if (ideia != null)
+        {
+            db.Ideas.Remove(ideia);
+            return Usuario((int)TempData["usuarioemsessao"]);
+        }
+        else { return NotFound("Erro desconhecido.");}
+    }
 }
