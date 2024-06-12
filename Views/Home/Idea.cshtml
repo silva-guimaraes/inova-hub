@@ -2,6 +2,14 @@
 <div class="container text-center">
     <h1>@ViewBag.Idea.Title</h1>
     <p>@ViewBag.Idea.Text</p>
-    @* TO DO: COLOCAR IMAGEM *@
+    <img src="/images/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg" alt="">
+
+    @* <div class="card mx-auto text-center">
+        @if (Model.Idea.Images.Count > 0) {
+            <img src="/images/@(Model.Idea.Images[0].Url)" alt="">
+        } else {
+            <img src="/images/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg" alt="">
+        }
+    </div> *@
     
 </div>
