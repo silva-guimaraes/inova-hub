@@ -54,8 +54,8 @@ public class HomeController : Controller
             .OrderBy(x => x.Id)
             .FirstOrDefaultAsync();
 
-        var model = new IdeaViewModel { Idea = query,
-          UserUpvoted = query.Upvotes.Any(x => x.UserId == usuarioPadrao!.Id),
+        var model = new IdeaViewModel { Idea = query!,
+          UserUpvoted = query!.Upvotes.Any(x => x.UserId == usuarioPadrao!.Id),
           imgUrl = query.Images.Count > 0 ? query.Images.ToList()[0].Url : noImage,
         };
 
@@ -71,7 +71,7 @@ public class HomeController : Controller
         if (query == null) { return NotFound(); }
         var model = query;
         var user = db.Users.Find(id);
-        ViewBag.Nome = user.Name;
+        ViewBag.Nome = user!.Name;
         ViewBag.Email = user.Email;
         usuarioLogado = user.Id;
         TempData["usuarioemsessao"] = usuarioLogado;
@@ -146,7 +146,7 @@ public class HomeController : Controller
         System.Console.WriteLine(categoria);
         System.Console.WriteLine(conteudo);
 
-        var newIdea = new Idea { Text = desc, Title = nome, IdUser = usuarioPadrao.Id, Content = conteudo};
+        var newIdea = new Idea { Text = desc, Title = nome, IdUser = usuarioPadrao!.Id, Content = conteudo};
         // db.Ideas.Add(newIdea);
 
         long size = imagens.Sum(f => f.Length);
@@ -223,7 +223,7 @@ public class HomeController : Controller
          usuario.Email = email;
          usuario.Password = senha;
          db.SaveChanges();
-         return Usuario((int)TempData["usuarioemsessao"]);
+         return Usuario((int)TempData["usuarioemsessao"]!);
       } else { return NotFound(":( Erro, contate ao ademiro!"); }
 
 
@@ -238,7 +238,7 @@ public class HomeController : Controller
         if (ideia != null)
         {
             db.Ideas.Remove(ideia);
-            return Usuario((int)TempData["usuarioemsessao"]);
+            return Usuario((int)TempData["usuarioemsessao"]!);
         }
         else { return NotFound("Erro desconhecido.");}
     }

@@ -29,55 +29,6 @@ namespace aspnet2.Controllers
         [HttpGet("GetUsers")]
         public async Task<IActionResult> GetUsers() { return Ok(await _db.Users.ToListAsync()); }
    
-        [HttpPost("PostComments")]
-        public async Task<IActionResult> PostComments(Comment coment) 
-        {
-            await _db.Comments.AddAsync(coment);
-            await _db.SaveChangesAsync();
-            return Ok(coment);
-        }
-        [HttpPost("PostFavorites")]
-        public async Task<IActionResult> PostFavorites(Favorite favorite)
-        {
-            await _db.Favorites.AddAsync(favorite);
-            await _db.SaveChangesAsync();
-            return Ok(favorite);
-        }
-        [HttpPost("PostIdeias")]
-        public async Task<IActionResult> PostIdeias(Idea idea)
-        {
-            await _db.Ideas.AddAsync(idea);
-            await _db.SaveChangesAsync();
-            return Ok(idea);
-        }
-        [HttpPost("PostImages")]
-        public async Task<IActionResult> PostImages(Image image)
-        {
-            await _db.Images.AddAsync(image);
-            await _db.SaveChangesAsync();
-            return Ok(image);
-        }
-        [HttpPost("PostPosts")]
-        public async Task<IActionResult> PostPosts(Post post)
-        {
-            await _db.Posts.AddAsync(post);
-            await _db.SaveChangesAsync();
-            return Ok(post);
-        }
-        [HttpPost("PostUpvote")]
-        public async Task<IActionResult> PostUpvote(Upvote upvote)
-        {
-            await _db.Upvotes.AddAsync(upvote);
-            await _db.SaveChangesAsync();
-            return Ok(upvote);
-        }
-        [HttpPost("PostUsers")]
-        public async Task<IActionResult> PostUsers(User user)
-        {
-            await _db.Users.AddAsync(user);
-            await _db.SaveChangesAsync();
-            return Ok(user);
-        }
 
     }
 }
