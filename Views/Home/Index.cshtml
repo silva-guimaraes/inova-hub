@@ -155,7 +155,9 @@ string Host = "localhost:5030";
     feed.innerHTML += await resposta.text();
     // ultimo += 3;
     let posts = document.querySelectorAll('p > a.text-dark');
-    ultimo = posts[posts.length - 1].href;
+    let href = posts[posts.length - 1].href;
+    let split = href.split('/');
+    ultimo = split[split.length-1];
   }
 
 
