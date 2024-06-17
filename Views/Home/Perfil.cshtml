@@ -213,24 +213,48 @@
             <form class="w-75 m-auto" method="post" action="EditarUsuario">
                 <div class="mb-3">
                     <label class="form-label">Nome</label>
-                    <input type="text" class="form-control" aria-describedby="emailHelp" name="nome">
+                    <input type="text" class="form-control" aria-describedby="emailHelp" id="name" name="nome">
             <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Ex: meu_endereco@email.com" name="email"> 
+                    <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Ex: meu_endereco@email.com" id="email" name="email"> 
             <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Senha</label>
-                    <input type="password" class="form-control" name="senha">
+                    <input type="password" class="form-control" id="password" name="senha">
                 </div>
-                <button type="submit" class="btn btn-primary w-100 mb-4 mt-4">Salvar</button>
+                <button id="submitBtn" type="submit" class="btn btn-primary w-100 mb-4 mt-4 disabled">Salvar</button>
             </form>
         </div>
         </div>
     </div>
     </div>
+
+    <script>
+        var nameField = document.getElementById("name");
+        var emailField = document.getElementById("email");
+        var passwordField = document.getElementById("password");
+        var submitButton = document.getElementById("submitBtn");
+
+        nameField.addEventListener("input", validateForm);
+        emailField.addEventListener("input", validateForm);
+        passwordField.addEventListener("input", validateForm);
+
+        function validateForm() {
+            var name = nameField.value;
+            var email = emailField.value;
+            var password = passwordField.value;
+
+            if(name !== "" && email !== "" && password !== ""){
+                submitButton.classList.remove("disabled");
+            }
+            else{
+                submitButton.classList.add("disabled");
+            }
+        }
+    </script>
 
 
 
