@@ -46,20 +46,34 @@ public class HomeController : Controller
     [Route("Ideia/{id?}")]
     public async Task<IActionResult> Idea(int? id)
     {
+        ViewBag.host = "http://localhost:5030";
         var usuarioPadrao = getUsuarioPadrao();
 
-        var query = await db.Ideas.Include(x => x.Upvotes)
-            .Include(x => x.Images)
-            .Where(x => x.Id == id)
-            .OrderBy(x => x.Id)
-            .FirstOrDefaultAsync();
+        var ideias = await db.Ideas.ToListAsync();
+        var images = await db.Images.ToListAsync();
 
-        var model = new IdeaViewModel { Idea = query,
-          UserUpvoted = query.Upvotes.Any(x => x.UserId == usuarioPadrao!.Id),
-          imgUrl = query.Images.Count > 0 ? query.Images.ToList()[0].Url : noImage,
-        };
+        foreach (var ideia in ideias) {
+            foreach (var image in images) {
+                if (ideia.Id == id && image.IdeaId == id) {
 
-        return View(model);
+                    System.Console.WriteLine(image.Url);
+
+                    return View(new IdeaViewModel {
+                            Idea = ideia,
+                            imgUrl = image.Url,
+                            // UserUpvoted = ideia.Upvotes.Any(x => x.UserId == usuarioPadrao!.Id),
+                    });
+                } 
+            }
+        }
+
+        // var query = await db.Ideas
+        //     // .Include(x => x.Upvotes)
+        //     // .Include(x => x.Images)
+        //     .Where(x => x.Id == id)
+        //     .FirstOrDefaultAsync();
+
+        return NotFound();
     }
 
     [Route("Usuario/{id?}")]
