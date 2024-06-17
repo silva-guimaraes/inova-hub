@@ -1,96 +1,109 @@
 
 @{
-    ViewData["Title"] = "Nova ideia";
+ViewData["Title"] = "Nova ideia";
 }
 
 <div class="container justify-content-center">
-    <h1 class="fs-1 mb-3 mt-5 text-center">Nova ideia</h1>
-    <form class="w-50 m-auto border border-secondary-subtle p-3 rounded shadow-sm" method="post"
-        enctype="multipart/form-data" action="CreateIdea" onsubmit="send(this); return false;">
-        <div class="mb-4">
-            <label class="form-label" for="nome">Título da Ideia:</label>
-            <input name="nome" type="text" class="form-control" id="inputTitle" placeholder="Ex: Dê um título para sua ideia">
-        </div>
-        <!-- email -->
-        <div class="mb-4 w-75">
-            <label class="form-label" for="imagens">Imagens</label>
-            <!-- <input name="imagens" type="url" class="form-control" id="inputImages" aria-describedby="emailHelp" placeholder="Ex: Digite a URL da imagem da sua ideia">  -->
-            <div class="mb-4 w-50">
-                <input id="imagens" type="file" name="imagens" value="">
-            </div>
-        <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
-        </div>
-        <div class="mb-4">
-            <!-- imagens -->
-            <label class="form-label" for="desc">Descrição</label>
-            <input name="desc" type="text" class="form-control" id="inputDesc" placeholder="Ex: Digite uma descrição detalhada da sua ideia">
-        </div>
-        <div class="mb-4 w-75">
-            <label for="colaboradores" class="form-label">Colaboradores</label>
-            <input name="colaboradores" type="tex" class="form-control" id="inputColab" placeholder="Adicione colaboradores da ideia">
-        </div>
-        <!-- selecionar categoria -->
-        <label for="categoria" class="form-label">Selecione a categoria da sua ideia </label>
-        <div class="mb-4 w-50">
-            <select id="select" name="categoria">
-                <option value="">categoria...</option>
-                <option value="TI" id="inputCategory">TI</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Biologicas">Biologicas</option>
-            </select>
-        </div>
+  <h1 class="fs-1 mb-3 mt-5 text-center">Nova ideia</h1>
+  <form class="w-50 m-auto border border-secondary-subtle p-3 rounded shadow-sm" method="post"
+    enctype="multipart/form-data" action="CreateIdea" onsubmit="send(this); return false;">
+    <div class="mb-4">
+      <label class="form-label" for="nome">Título da Ideia:</label>
+      <input name="nome" type="text" class="form-control" id="inputTitle" placeholder="Ex: Dê um título para sua ideia">
+    </div>
+    <!-- email -->
+    <div class="mb-4 w-75">
+      <label class="form-label" for="imagens">Imagens</label>
+      <!-- <input name="imagens" type="url" class="form-control" id="inputImages" aria-describedby="emailHelp" placeholder="Ex: Digite a URL da imagem da sua ideia">  -->
+      <div class="mb-4 w-50">
+        <input id="imagens" type="file" name="imagens" value="">
+      </div>
+      <!-- <div id="emailHelp" class="form-text">Nós nunca iremos compartilhar seu email para ninguém.</div> -->
+    </div>
+    <div class="mb-4">
+      <!-- imagens -->
+      <label class="form-label" for="desc">Resumo da Ideia</label>
+      <input name="desc" type="text" class="form-control" id="inputDesc" placeholder="Ex: Digite uma descrição detalhada da sua ideia">
+    </div>
 
-        <div class="text-center">
-            <button type="submit" id="submitBtn" class="btn btn-secondary w-25 m-auto mb-5 mt-5 disabled">Postar</button>
-        </div>
-    </form>
+    <div class="mb-4 w-75">
+      <label for="colaboradores" class="form-label">Colaboradores</label>
+      <input name="colaboradores" type="tex" class="form-control" id="inputColab" placeholder="Adicione colaboradores da ideia">
+    </div>
+    <!-- selecionar categoria -->
+    <label for="categoria" class="form-label">Selecione a categoria da sua ideia </label>
+    <div class="mb-4 w-50">
+      <select id="select" name="categoria">
+        <option value="">categoria...</option>
+        <option value="TI" id="inputCategory">TI</option>
+        <option value="Marketing">Marketing</option>
+        <option value="Biologicas">Biologicas</option>
+      </select>
+    </div>
+
+    <div class="mb-4 w-75">
+      <label for="texto" class="form-label">Texto:</label>
+      <!-- <input name="conteudo" class="form-control" id="conteudo" placeholder="Texto...."> -->
+      <textarea style="height: 50vh;" name="conteudo" class="form-control w-100 mx-auto" id="conteudo"></textarea>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" id="submitBtn" class="btn btn-secondary w-25 m-auto mb-5 mt-5 disabled">Postar</button>
+    </div>
+  </form>
 </div>
 <script>
 
-        // Captura os elementos de senha e botão de envio
-        let tituloField= document.getElementById("inputTitle");
-        let descricaoField = document.getElementById("inputDesc");
-        let imagensField = document.getElementById("imagens");
-        let categorias = document.getElementById("select");
-        // let colabField = document.getElementById("inputColab");
+// Captura os elementos de senha e botão de envio
+let tituloField= document.getElementById("inputTitle");
+let descricaoField = document.getElementById("inputDesc");
+let imagensField = document.getElementById("imagens");
+let categorias = document.getElementById("select");
+let conteudoField = document.getElementById("conteudo");
+// let colabField = document.getElementById("inputColab");
 
-        let submitButton = document.getElementById("submitBtn");
+let submitButton = document.getElementById("submitBtn");
 
-        // Adiciona um ouvinte de evento de entrada para ambos os campos de senha
-        tituloField.oninput = validatePassword;
-        descricaoField.oninput = validatePassword;
-        // colabField.oninput = validatePassword;
-        imagensField.oninput = validatePassword;
+// Adiciona um ouvinte de evento de entrada para ambos os campos de senha
+tituloField.oninput = validatePassword;
+descricaoField.oninput = validatePassword;
+// colabField.oninput = validatePassword;
+imagensField.oninput = validatePassword;
+conteudoField.oninput = validatePassword;
 
-        // Função para validar as senhas
-        function validatePassword() {
+// Função para validar as senhas
+function validatePassword() {
 
-            let titulo = tituloField.value;
-            let descricao = descricaoField.value;
-            let imagens = imagensField.value;
+  let titulo = tituloField.value;
+  let descricao = descricaoField.value;
+  let imagens = imagensField.value;
+  let conteudo = conteudoField.value;
 
-            console.log(imagens);
-            // let colab = colabField.value;
+  console.log(imagens);
+  // let colab = colabField.value;
 
-            // Ativa o botão de envio se as senhas coincidirem e não forem vazias
-            if (titulo !== "" && descricao !== "" /* && colab !== "" */ && imagens != "") {
-                submitButton.classList.add("btn-primary");
-                submitButton.classList.remove("btn-secondary");
-                submitButton.classList.remove("disabled");
-            } else {
-                submitButton.classList.add("btn-secondary");
-                submitButton.classList.add("disabled");
-                submitButton.classList.remove("btn-primary");
-            }
-        }
+  // Ativa o botão de envio se as senhas coincidirem e não forem vazias
+  if (titulo !== "" && descricao !== "" && conteudo !== "" && imagens !== "") {
+    submitButton.classList.add("btn-primary");
+    submitButton.classList.remove("btn-secondary");
+    submitButton.classList.remove("disabled");
+  } else {
+    submitButton.classList.add("btn-secondary");
+    submitButton.classList.add("disabled");
+    submitButton.classList.remove("btn-primary");
+  }
+}
 
-        async function send(form) {
-            let reponse = await fetch('http://localhost:5030/CreateIdea', {
-                method: 'POST',
-                body: new FormData(form)
-            });
-            console.log(await reponse.json());
-        }
+async function send(form) {
+  let response = await fetch('http://localhost:5030/CreateIdea', {
+    method: 'POST',
+    body: new FormData(form)
+  });
+  response = await response.json()
+  console.log(response);
+  // window.location.href = 'http://localhost:5030/Idea/' + response.id 
+  location.replace('http://localhost:5030/Ideia/' + response.id);
+}
 
-        validatePassword()
+validatePassword()
 </script>

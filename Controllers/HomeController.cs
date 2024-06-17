@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using aspnet2.Models;
 using Microsoft.EntityFrameworkCore;
+// using System.Linq;
 namespace aspnet2.Controllers;
 
 [ApiExplorerSettings(IgnoreApi = true)]
@@ -15,12 +16,15 @@ public class HomeController : Controller
         db = _db;
     }
 
+    string noImage = "360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg";
+
     [Route("")]
     public IActionResult Index() { return View();  }
 
     [Route("Feed/{ultimo?}")]
     public async Task<IActionResult> Feed(int? ultimo)
     {
+        System.Console.WriteLine(ultimo);
         if (ultimo == null) { ultimo = int.MinValue; }
         var usuarioPadrao = getUsuarioPadrao();
         var query = await db.Ideas.Include(x => x.Upvotes)
@@ -32,19 +36,30 @@ public class HomeController : Controller
         var model = query.Select(
                 (idea, index) => new IdeaViewModel { 
                         Idea = idea,
-                        UserUpvoted = idea.Upvotes.Any(x => x.UserId == usuarioPadrao!.Id)
+                        UserUpvoted = idea.Upvotes.Any(x => x.UserId == usuarioPadrao!.Id),
+                        imgUrl = idea.Images.Count > 0 ? idea.Images.ToList()[0].Url : noImage,
                     })
             .ToList();
         return View("FeedIdea", model);
     }
 
     [Route("Ideia/{id?}")]
-    public IActionResult Idea(int? id)
+    public async Task<IActionResult> Idea(int? id)
     {
-        var query = db.Ideas.Where(x => x.Id == id).Single();
-        ViewBag.Idea = query;
-        ViewBag.Title = query.Title;
-        return View();
+        var usuarioPadrao = getUsuarioPadrao();
+
+        var query = await db.Ideas.Include(x => x.Upvotes)
+            .Include(x => x.Images)
+            .Where(x => x.Id == id)
+            .OrderBy(x => x.Id)
+            .FirstOrDefaultAsync();
+
+        var model = new IdeaViewModel { Idea = query,
+          UserUpvoted = query.Upvotes.Any(x => x.UserId == usuarioPadrao!.Id),
+          imgUrl = query.Images.Count > 0 ? query.Images.ToList()[0].Url : noImage,
+        };
+
+        return View(model);
     }
 
     [Route("Usuario/{id?}")]
@@ -119,18 +134,19 @@ public class HomeController : Controller
 
     [HttpPost]
     [Route("CreateIdea")]
-    public async Task<Object> CriarIdeia(string nome, string desc, string categoria, List<IFormFile> imagens) 
+    public async Task<Object> CriarIdeia(string nome, string desc, string categoria, List<IFormFile> imagens,
+            string conteudo) 
     {
 
         var usuarioPadrao = getUsuarioPadrao();
-
 
         System.Console.WriteLine("nova ideia!");
         System.Console.WriteLine(nome);
         System.Console.WriteLine(desc);
         System.Console.WriteLine(categoria);
+        System.Console.WriteLine(conteudo);
 
-        var newIdea = new Idea {Text = desc, Title = nome, IdUser = usuarioPadrao.Id };
+        var newIdea = new Idea { Text = desc, Title = nome, IdUser = usuarioPadrao.Id, Content = conteudo};
         // db.Ideas.Add(newIdea);
 
         long size = imagens.Sum(f => f.Length);
@@ -139,7 +155,7 @@ public class HomeController : Controller
         {
             if (formFile.Length > 0)
             {
-                String[] path = {Environment.CurrentDirectory,"wwwroot", "images", formFile.FileName};
+                String[] path = { Environment.CurrentDirectory,"wwwroot", "images", formFile.FileName };
 
                 
                 var filePath = Path.Combine(path);
@@ -150,13 +166,12 @@ public class HomeController : Controller
                 }
 
                 db.Images.Add(new Image { Url = formFile.FileName, Idea = newIdea });
-
             }
         }
 
         db.SaveChanges();
 
-        return Ok(new { count = imagens.Count, size });
+        return Ok(new { id = newIdea.Id, count = imagens.Count, size });
     }
     
 

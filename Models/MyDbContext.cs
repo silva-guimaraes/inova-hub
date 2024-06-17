@@ -53,6 +53,7 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.IdIdea).HasColumnName("id_idea");
             entity.Property(e => e.FavoriteDate)
                 .HasDefaultValueSql("CURRENT_DATE")
+                // mentira!!!!!!!
                 .HasComment("vai automaticamente gerar data atual quando linha for inserida")
                 .HasColumnName("favorite_date");
             entity.HasOne(d => d.IdIdeaNavigation).WithMany(p => p.Favorites)
@@ -76,6 +77,9 @@ public partial class MyDbContext : DbContext
             entity.Property(e => e.Text)
                 .HasMaxLength(4000)
                 .HasColumnName("text");
+            entity.Property(e => e.Content)
+                .HasMaxLength(10000)
+                .HasColumnName("content");
             entity.Property(e => e.Title)
                 .HasMaxLength(512)
                 .HasColumnName("title");
@@ -83,6 +87,10 @@ public partial class MyDbContext : DbContext
                 .HasForeignKey(d => d.IdUser)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("user_fk");
+            entity.HasMany(e => e.Images)
+                .WithOne(e => e.Idea)
+                .HasForeignKey(e => e.IdeaId)
+                .IsRequired();
         });
 
         modelBuilder.Entity<Image>(entity =>
