@@ -36,7 +36,9 @@
                      <div id="feed">
                         @foreach (var Idea in Model.Ideas) {
                             @(await Html.PartialAsync("IdeaCard",
-                                new IdeaViewModel { Idea = Idea, UserUpvoted = false, deleteIdea = true }));
+                                new IdeaViewModel { Idea = Idea, UserUpvoted = false, deleteIdea = true,
+                                  imgUrl = Idea.Images.Count > 0 ? Idea.Images.ToList()[0].Url : "360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
+                              }));
                         }
                     </div> 
 

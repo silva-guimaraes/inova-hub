@@ -67,8 +67,11 @@ public class HomeController : Controller
     {
         var query = db.Users
             .Include(x => x.Ideas)
+            .ThenInclude(x => x.Images)
             .FirstOrDefault(x => x.Id == id);
-        if (query == null) { return NotFound(); }
+        if (query == null) {
+            return NotFound();
+        }
         var model = query;
         var user = db.Users.Find(id);
         ViewBag.Nome = user.Name;
