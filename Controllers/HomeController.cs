@@ -52,6 +52,7 @@ public class HomeController : Controller
         var ideias = await db.Ideas.ToListAsync();
         var images = await db.Images.ToListAsync();
 
+        // eu juro que eu tentei fazer isso do jeito certo mas o ef não colaborava
         foreach (var ideia in ideias) {
             foreach (var image in images) {
                 if (ideia.Id == id && image.IdeaId == id) {
@@ -67,6 +68,7 @@ public class HomeController : Controller
             }
         }
 
+        // esse seria o jeito certo
         // var query = await db.Ideas
         //     // .Include(x => x.Upvotes)
         //     // .Include(x => x.Images)
