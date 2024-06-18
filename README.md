@@ -10,4 +10,6 @@
 -  Docker
 -  Postgres
 -  Swagger
+-  Figma
+-  PgModeler
 -  Bootstrap
