@@ -49,24 +49,12 @@ public class HomeController : Controller
         ViewBag.host = "http://localhost:5030";
         var usuarioPadrao = getUsuarioPadrao();
 
-        var ideias = await db.Ideas.ToListAsync();
-        var images = await db.Images.ToListAsync();
-
         // eu juro que eu tentei fazer isso do jeito certo mas o ef não colaborava
-        foreach (var ideia in ideias) {
-            foreach (var image in images) {
-                if (ideia.Id == id && image.IdeaId == id) {
-
-                    System.Console.WriteLine(image.Url);
-
-                    return View(new IdeaViewModel {
-                            Idea = ideia,
-                            imgUrl = image.Url,
-                            // UserUpvoted = ideia.Upvotes.Any(x => x.UserId == usuarioPadrao!.Id),
-                    });
-                } 
-            }
-        }
+        return View(new IdeaViewModel {
+                Idea = await db.Ideas.Include(x=>x.Upvotes).Where(x=>x.Id == id).FirstOrDefaultAsync(),
+                imgUrl = (await db.Images.Where(x=>x.IdeaId == id).FirstOrDefaultAsync())?.Url ?? noImage,
+                // UserUpvoted = ideia.Upvotes.Any(x => x.UserId == usuarioPadrao!.Id),
+                });
 
         // esse seria o jeito certo
         // var query = await db.Ideas
@@ -74,8 +62,6 @@ public class HomeController : Controller
         //     // .Include(x => x.Images)
         //     .Where(x => x.Id == id)
         //     .FirstOrDefaultAsync();
-
-        return NotFound();
     }
 
     [Route("Usuario/{id?}")]
