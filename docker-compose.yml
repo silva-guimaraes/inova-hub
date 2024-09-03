@@ -11,4 +11,4 @@ services:
     environment:
       POSTGRES_PASSWORD: 1234
       POSTGRES_USER: postgres
-      POSTGRES_DB: my_db
+      POSTGRES_DB: inova

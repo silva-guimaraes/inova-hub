@@ -1,0 +1,337 @@
+package web
+
+import "inova-hub/internal/database"
+
+
+// templ HelloForm() {
+// 	@Base() {
+// 		<form hx-post="/hello" method="POST" hx-target="#hello-container">
+// 			<input class="border" id="name" name="name" type="text"/>
+// 			<button type="submit">Submit</button>
+// 		</form>
+// 		<div id="hello-container"></div>
+// 	}
+// }
+
+// templ HelloPost(name string) {
+//   <div>Hello, { name }</div>
+// }
+
+templ Index(loggedin *database.User) {
+  @Base(loggedin) {
+    <style>
+
+    body {
+      overflow: hidden;
+    }
+      /* todo: reducded motion */
+      @keyframes slideNextToCurrent {
+        0% {    transform: translateX(100%);  opacity: 0; }
+        100% {  transform: translateX(0%);    opacity: 1; }
+      }
+
+      @keyframes slideCurrentToPrevious {
+        0% {    transform: translateX(0%);    opacity: 1; }
+        100% {  transform: translateX(-100%);  opacity: 0; display: none; }
+      }
+
+      @keyframes slidePreviousToCurrent {
+        0% {    transform: translateX(-100%);  opacity: 0; }
+        100% {  transform: translateX(0%);    opacity: 1; }
+      }
+
+      @keyframes slideCurrentToNext {
+        0% {    transform: translateX(0%);    opacity: 1; }
+        100% {  transform: translateX(100%);  opacity: 0; display: none; }
+      }
+
+      .next-to-current-animation {
+        animation: slideNextToCurrent 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .current-to-previous-animation {
+        animation: slideCurrentToPrevious 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        animation-fill-mode: forwards;
+      }
+      .previous-to-current-animation {
+        animation: slidePreviousToCurrent 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .current-to-next-animation {
+        animation: slideCurrentToNext 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+        animation-fill-mode: forwards;
+      }
+
+      .slider {
+        position: absolute;
+      }
+
+    </style>
+      <div id="feed" class="flex justify-center items-center flex-grow">
+        @card("")
+        @card("hidden")
+        @card("hidden")
+        @card("hidden")
+        @card("hidden")
+        @card("hidden")
+        @card("hidden")
+        @card("hidden")
+        @card("hidden")
+        @card("hidden")
+      </div>
+
+      <div id="controls" class="flex items-center justify-end w-3/4 m-auto mb-20">
+        <div class="">
+          <button type="button" id="previous-button" onclick="prev()" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition duration-200 px-6 py-3 text-lg">
+          Anterior
+          </button>
+          <button type="button" id="next-button" onclick="next()" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition duration-200 px-6 py-3 text-lg">
+          Próximo
+          </button>
+        </div>
+      </div>
+
+      <script>
+      let nextButton = document.querySelector('#next-button')
+      if (nextButton == null) throw '#next-button';
+
+      let previousButton = document.querySelector('#previous-button');
+      if (previousButton == null) throw '#previous-button';
+
+      let feed = document.querySelector('#feed');
+      if (feed == null) throw '#feed';
+
+      let index = 0;
+
+      function setAnimation(el, classString) {
+        if (el == null) throw 'null element';
+        el.classList.remove('hidden');
+        el.classList.remove('current-to-previous-animation');
+        el.classList.remove('next-to-current-animation');
+        el.classList.remove('current-to-next-animation');
+        el.classList.remove('previous-to-current-animation');
+
+        el.classList.add(classString);
+      }
+
+      function next() {
+        let currentCard = index   > feed.children.length ? null : feed.children[index];
+        let nextCard    = index+1 > feed.children.length ? null : feed.children[index+1];
+
+        if (nextCard == null) {
+          console.log('no next card');
+          return;
+        }
+
+        if (currentCard != null) {
+          setAnimation(currentCard,'current-to-previous-animation')
+        }
+
+        setAnimation(nextCard,'next-to-current-animation')
+
+        index += 1;
+        console.log('current card', index);
+      }
+
+      function prev() {
+        let currentCard = index   < 0 ? null : feed.children[index];
+        let previousCard    = index-1 < 0 ? null : feed.children[index-1];
+
+        if (previousCard == null) {
+          console.log('no previous card');
+          return;
+        }
+
+        if (currentCard != null) {
+          setAnimation(currentCard,'current-to-next-animation')
+        }
+
+        setAnimation(previousCard,'previous-to-current-animation')
+
+        index -= 1;
+        console.log('current card', index);
+      }
+      </script>
+
+  }
+}
+
+templ CardBox(classes ...string) {
+  <div class={ "bg-white rounded-lg shadow-lg p-8 flex", classes }>
+    { children... }
+  </div>
+}
+
+templ DetailedIdeia(loggedin *database.User) {
+  @Base(loggedin) {
+    <body class="bg-gray-50 text-gray-800">
+    <!-- Main Content -->
+    <div class="container mx-auto py-10 px-4">
+        <!-- Title and User Info Section -->
+        <div class="flex flex-col lg:flex-row lg:items-start lg:space-x-8 mb-8">
+            <div class="lg:w-2/3">
+                <!-- Title -->
+                <h1 class="text-4xl font-bold mb-4">Ideia Título</h1>
+                
+                <!-- User Info Section -->
+                <div class="flex items-center mb-6">
+                  <img src="https://yt3.googleusercontent.com/uMUat6yJL2_Sk6Wg2-yn0fSIqUr_D6aKVNVoWbgeZ8N-edT5QJAusk4PI8nmPgT_DxFDTyl8=s900-c-k-c0x00ffffff-no-rj" alt="Profile Picture" class="w-12 h-12 rounded-full mr-4"/>
+                  <div>
+                    <h2 class="text-xl font-semibold">Nome do Grupo</h2>
+                    <ul class="list-disc list-inside text-blue-600">
+                      <li><a href="#">Twitter</a></li>
+                      <li><a href="#">LinkedIn</a></li>
+                      <li><a href="#">Website</a></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <!-- Description -->
+                <p class="text-lg mb-6">
+                    This is a brief description of the content. It provides an overview or an introduction to the topic being discussed.
+                </p>
+            </div>
+            
+            <!-- Image Section -->
+            <div class="lg:w-1/3">
+                <img src="https://yt3.googleusercontent.com/uMUat6yJL2_Sk6Wg2-yn0fSIqUr_D6aKVNVoWbgeZ8N-edT5QJAusk4PI8nmPgT_DxFDTyl8=s900-c-k-c0x00ffffff-no-rj" alt="Main Image" class="w-full h-auto rounded-lg shadow-md"/>
+            </div>
+        </div>
+        
+        <div class="p-6 border mb-10">
+          <!-- Stats Section -->
+          <div class="flex justify-around">
+              <div class="text-center">
+                  <p class="text-2xl font-semibold">23/10/2001</p>
+                  <p class="text-gray-600">Criação</p>
+              </div>
+              <div class="text-center">
+                  <p class="text-2xl font-semibold">123</p>
+                  <p class="text-gray-600">Seguidores</p>
+              </div>
+              <div class="text-center">
+                  <p class="text-2xl font-semibold">234</p>
+                  <p class="text-gray-600">Lampadas</p>
+              </div>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="prose prose-lg mx-auto bg-white rounded-lg shadow-lg p-8">
+          <div class="w-1/2 leading-7">
+              <p>
+                  This is the main content text. You can fill this section with the detailed information, analysis, or narrative you want to convey. The prose class from Tailwind CSS helps in making the text look clean and easy to read.
+              </p>
+              <p>
+                  Continue adding more paragraphs, bullet points, or other elements as needed to complete the content of this section.
+              </p>
+          </div>
+        </div>
+    </div>
+</body>
+
+  }
+}
+
+templ card(classes ...string) {
+  <!-- Left Side: Title, Description, and Controls -->
+  @CardBox(append([]string{"slider", "w-3/4", "h-2/3"}, classes...)...) { // ergh
+    <div class="flex-1 flex flex-col justify-between">
+      <!-- Title -->
+      <div>
+        <h1 class="text-6xl font-bold mb-4">Card Título</h1>
+        <!-- Description with More Content -->
+        <p class="mb-6 text-lg text-gray-700">
+          This card features an insightful description that spans multiple lines. It provides detailed 
+          information about the content, giving readers an engaging and interesting overview. Lorem ipsum 
+          dolor sit amet, consectetur adipiscing elit. Vestibulum in massa at sapien venenatis auctor eget 
+          sit amet velit. Fusce sed eros eget risus fringilla facilisis et ac massa. Curabitur in mauris ac 
+          lorem gravida vehicula at ut justo. Nullam vulputate justo a lectus vehicula, sed consequat libero 
+          fermentum. Etiam sit amet turpis eget sapien varius tincidunt non a eros. Morbi nec neque ut augue 
+          tincidunt mollis.
+        </p>
+        <!-- Dotted List -->
+        <ul class="list-disc list-inside space-y-2 text-gray-700">
+          <li>First point about the card</li>
+          <li>Second point with more details</li>
+          <li>Third point highlighting key aspects</li>
+        </ul>
+      </div>
+      <!-- Controls with See More -->
+      <div class="flex items-center space-x-4 mt-6">
+        <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">Downvote</button>
+        <span class="text-xl font-bold">0</span>
+        <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg">Upvote!</button>
+        <a target="_blank" href="i/uuid" class="text-blue-600 underline ml-auto">Confira em detalhes!</a>
+      </div>
+    </div>
+    <!-- Right Side: Image -->
+    <div class="w-1/2 pl-8">
+      <a href="i/uuid" target="_blank">
+        <img src="https://yt3.googleusercontent.com/uMUat6yJL2_Sk6Wg2-yn0fSIqUr_D6aKVNVoWbgeZ8N-edT5QJAusk4PI8nmPgT_DxFDTyl8=s900-c-k-c0x00ffffff-no-rj" 
+             alt="Illustrative image" 
+             class="h-full w-full object-cover rounded-r-lg"/>
+      </a>
+    </div>
+  }
+}
+
+templ fieldForm(inputType, name, label string) {
+  <div class="mb-4">
+      <label for={ name } class="block text-gray-700 mb-2">{ label }</label>
+      <input type={ inputType } id={ name } name={ name } class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required/>
+  </div>
+}
+
+templ textFieldForm(name, label string) {
+  @fieldForm("text", name, label)
+}
+
+templ passwordFieldForm(name, label string) {
+  @fieldForm("password", name, label)
+}
+
+templ Register(loggedin *database.User) {
+  @Base(loggedin) {
+    <form action="/reg" method="POST" class="fle-grow max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+      <h2 class="text-2xl font-semibold mb-6 text-center">Criar nova conta</h2>
+
+        @textFieldForm("username", "Nome de Usuário")
+
+        @textFieldForm("email", "Email")
+
+        @passwordFieldForm("password", "Senha")
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit"
+                class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">
+          Registrar
+        </button>
+        <p class="text-sm mt-4">já possuí uma conta? <a href="/login" class="decoration-sky-500 text-blue-600">clique aqui para entrar!</a></p>
+      </div>
+  </form>
+
+  }
+}
+
+templ Login(loggedin *database.User) {
+  @Base(loggedin) {
+    <form action="/login" method="POST" class="fle-grow max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
+      <h2 class="text-2xl font-semibold mb-6 text-center">Entrar em conta</h2>
+
+        @textFieldForm("email", "Email")
+
+        @passwordFieldForm("password", "Senha")
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit"
+                class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors">
+          Entrar
+        </button>
+        <p class="text-sm mt-4">não possuí uma conta? <a href="/reg" class="decoration-sky-500 text-blue-600">registrar uma!</a></p>
+      </div>
+  </form>
+
+  }
+}
+
