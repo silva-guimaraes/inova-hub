@@ -4,8 +4,8 @@ Plataforma de feedback de ideais.
 
 ## Quick Start
 ```sh
-$ git clone 'link do repositorio'
-$ cd 'repositorio'
+$ git clone 'https://github.com/silva-guimaraes/inova-hub/'
+$ cd 'inova-hub'
 $ ./docker.sh
 $ ./create_db.sh
 $ ./run.sh
